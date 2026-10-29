@@ -628,7 +628,7 @@
           </div>
           <div class="option-box">
             <label for="nameScaleRange">学年・名前の大きさ</label>
-            <input type="range" id="nameScaleRange" min="0.75" max="1.35" step="0.05" value="1.0">
+            <input type="range" id="nameScaleRange" min="0.75" max="1.6" step="0.05" value="1.35">
           </div>
         </div>
       </section>
@@ -915,7 +915,7 @@
     function resetAdjustments() {
       const defaults = {
         gradeOffsetYRange: "0", gradeOffsetXRange: "0",
-        nameOffsetYRange: "0", nameStepRange: "1", nameScaleRange: "1",
+        nameOffsetYRange: "0", nameStepRange: "1", nameScaleRange: "1.35",
         genScaleRange: "1", genOffsetXRange: "0", styleSelect: "solid"
       };
       Object.entries(defaults).forEach(([id, v]) => { document.getElementById(id).value = v; });
@@ -1044,7 +1044,7 @@
         gradeOffsetXMm: parseFloat(document.getElementById("gradeOffsetXRange")?.value) || 0,
         nameOffsetYMm: parseFloat(document.getElementById("nameOffsetYRange")?.value) || 0,
         nameStepRatio: parseFloat(document.getElementById("nameStepRange")?.value) || 1.0,
-        nameScale: parseFloat(document.getElementById("nameScaleRange")?.value) || 1.0,
+        nameScale: parseFloat(document.getElementById("nameScaleRange")?.value) || 1.35,
         genScale: parseFloat(document.getElementById("genScaleRange").value) || 1,
         genOffsetXMm: parseFloat(document.getElementById("genOffsetXRange").value) || 0,
         styleMode: document.getElementById("styleSelect").value, // solid | gray
@@ -1085,7 +1085,7 @@
       const hasNameOrGrade = Boolean(cfg.gradeText || cfg.nameText);
       const mainBaseXMm = hasNameOrGrade ? 100 : 87.5; // 右側10.5cm位置が課題の中心
       const mainCenterXMm = mainBaseXMm + (cfg.genOffsetXMm || 0); // 「字の左右の位置」スライダーぶん、字も中心線も動かす
-      const nameCenterXMm = 16 + (cfg.gradeOffsetXMm || 0);  // 左から1.6cm位置が学年・名前の中心（スライダーで、学年も名前もいっしょに動く）
+      const nameCenterXMm = 16 + ((cfg.nameScale || 1) - 1) * 8 + (cfg.gradeOffsetXMm || 0);  // 左から1.6cm位置が学年・名前の中心（スライダーで、学年も名前もいっしょに動く）
       const splitLineXMm = 54;   // 名前エリアと本字エリアの境界目安 (左から5.4cm)
 
       // 1. 補助線・ガイド線の描画
