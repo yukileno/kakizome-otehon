@@ -806,7 +806,33 @@
         { word: "強い決意", sub: "6年定番" },
         { word: "未来の夢", sub: "6年定番" },
         { word: "感謝の心", sub: "6年定番" },
-        { word: "希望の道", sub: "6年定番" }
+        { word: "希望の道", sub: "6年定番" },
+        { word: "春光富士", sub: "6年定番" },
+        { word: "花の新春", sub: "6年定番" },
+        { word: "白雪峰光", sub: "6年定番" },
+        { word: "天光初雪", sub: "6年定番" },
+        { word: "天上大風", sub: "6年定番" },
+        { word: "希望前進", sub: "6年定番" },
+        { word: "天地清新", sub: "6年定番" },
+        { word: "雪花新春", sub: "6年定番" },
+        { word: "東海初光", sub: "6年定番" },
+        { word: "初冬の光", sub: "6年定番" },
+        { word: "飛雪千里", sub: "6年定番" },
+        { word: "初日の光", sub: "6年定番" },
+        { word: "春の天使", sub: "6年定番" },
+        { word: "東天の雲", sub: "6年定番" },
+        { word: "若木の里", sub: "6年定番" },
+        { word: "天地新春", sub: "6年定番" },
+        { word: "南十字星", sub: "6年定番" },
+        { word: "風林火山", sub: "6年定番" },
+        { word: "天地創造", sub: "6年定番" },
+        { word: "希望の光", sub: "6年定番" },
+        { word: "江山春色", sub: "6年定番" },
+        { word: "天地初光", sub: "6年定番" },
+        { word: "白雪春光", sub: "6年定番" },
+        { word: "平和の光", sub: "6年定番" },
+        { word: "天長地久", sub: "6年定番" },
+        { word: "光風動春", sub: "6年定番" }
       ],
       "四字熟語・抱負": [
         { word: "一所懸命", sub: "四字熟語" },
@@ -1308,52 +1334,39 @@
         drawOtehonToCanvas(masterCanvas, cfg, false);
 
         if (mode === "real3") {
-          // 680mm を 3枚の A4 に分割。つなぎ目には「色つきの帯（12mm）」を作り、同じ色の帯どうしを重ねて貼る。
-          //   つなぎ目A（赤）：1枚目の下 ⇔ 2枚目の上　／　つなぎ目B（緑）：2枚目の下 ⇔ 3枚目の上
-          // 帯の中身（絵）は、上のページの下と下のページの上で同じ。だから重ねると、字の線もぴったり合う。
-          const BAND_MM = 12;
+          // 680mm を 3枚の A4 に分割（のりしろ方式）。
+          //   1枚目：0〜230mm ＋ 下に「のりしろ」12mm（230〜242mmの絵を重ねて入れてある）
+          //   2枚目：230〜460mm ＋ のりしろ12mm　／　3枚目：460〜680mm
+          // 2枚目・3枚目は、絵の上のふち（黒い実線）で上の余白を切り落とし、前の紙の「貼り合わせ線」に上のふちを合わせて、のりしろの上に貼る。
+          // つなぎ目A（1枚目と2枚目）は赤、つなぎ目B（2枚目と3枚目）は緑で、色も合わせる。
+          const GLUE_MM = 12;
           const JOINTS = [
             { name: "A", color: "#dc2626", colorName: "赤", dash: [14, 10] },
             { name: "B", color: "#16a34a", colorName: "緑", dash: [4, 8] }
           ];
           const slices = [
-            { title: "【1 / 3 枚目：上】", startMm: 0, endMm: 230, topBand: null, bottomBand: 0,
-              guide: "貼り方：2枚目・3枚目は、色の帯の「上のふち」でハサミで切って、上の余白を切り落とします。切ったほうを上にのせて、同じ色の帯どうし（赤→赤、緑→緑）を、2本の線がぴったり重なるように貼ります。" },
-            { title: "【2 / 3 枚目：中】", startMm: 230, endMm: 460, topBand: 0, bottomBand: 1,
-              guide: "✂ 上の【赤い帯】の上のふちで、上の余白を切り落とす → 1枚目の【赤い帯】の上に重ねて貼る。　下の【緑の帯】には、3枚目の緑の帯を重ねる。" },
-            { title: "【3 / 3 枚目：下】", startMm: 460, endMm: 680, topBand: 1, bottomBand: null,
-              guide: "✂ 上の【緑の帯】の上のふちで、上の余白を切り落とす → 2枚目の【緑の帯】の上に重ねて貼る。" }
+            { title: "【1 / 3 枚目：上】", startMm: 0, endMm: 230, topJoint: null, bottomJoint: 0,
+              guide: "貼り方：2枚目・3枚目は、黒い実線（✂）のところで上の余白を切り落とします。切った紙の上のふちを、前の紙の【赤／緑の貼り合わせ線】にぴったり合わせて、のりしろの上に貼ります（赤→赤、緑→緑）。" },
+            { title: "【2 / 3 枚目：中】", startMm: 230, endMm: 460, topJoint: 0, bottomJoint: 1, guide: "" },
+            { title: "【3 / 3 枚目：下】", startMm: 460, endMm: 680, topJoint: 1, bottomJoint: null, guide: "" }
           ];
 
-          // 帯を描く（yTopMm はこのページの上端からの位置）。2本の線は、上下とも同じ「絵の位置」に引く。
-          const drawBand = (sCtx, yTopMm, joint, side, canvasW) => {
-            const y0 = yTopMm * PX_PER_MM, bandH = BAND_MM * PX_PER_MM;
+          // のりしろ（紙の下の12mm）：色つきの貼り合わせ線と、色をつけた帯
+          const drawGlue = (sCtx, joinYMm, joint, canvasW) => {
+            const joinY = joinYMm * PX_PER_MM, glueH = GLUE_MM * PX_PER_MM;
             sCtx.save();
-            sCtx.fillStyle = joint.color;
-            sCtx.globalAlpha = 0.10;
-            sCtx.fillRect(0, y0, canvasW, bandH);
-            sCtx.globalAlpha = 1;
+            sCtx.fillStyle = "rgba(245, 245, 245, 0.78)";
+            sCtx.fillRect(4, joinY, canvasW - 8, glueH - 4);
             sCtx.strokeStyle = joint.color;
             sCtx.lineWidth = 4;
-            const lines = [y0 + 0.6 * PX_PER_MM, y0 + bandH - 0.6 * PX_PER_MM];
-            lines.forEach((ly, i) => {
-              // 下のページの上のふち（切る線）だけは実線にする
-              sCtx.setLineDash(side === "top" && i === 0 ? [] : joint.dash);
-              sCtx.beginPath(); sCtx.moveTo(0, ly); sCtx.lineTo(canvasW, ly); sCtx.stroke();
-            });
+            sCtx.setLineDash(joint.dash);
+            sCtx.beginPath(); sCtx.moveTo(0, joinY); sCtx.lineTo(canvasW, joinY); sCtx.stroke();
             sCtx.setLineDash([]);
-            // 文字（白ぶちつき）
-            const label = side === "bottom"
-              ? `【${joint.colorName} ${joint.name}】▲ この帯に、次の紙の${joint.colorName}い帯を重ねて貼る ▲`
-              : `【${joint.colorName} ${joint.name}】✂ 上のふちで切る → 前の紙の${joint.colorName}い帯に重ねる`;
-            sCtx.font = `bold ${3.4 * PX_PER_MM}px sans-serif`;
+            sCtx.fillStyle = joint.color;
+            sCtx.font = `bold ${3.6 * PX_PER_MM}px sans-serif`;
             sCtx.textAlign = "center";
             sCtx.textBaseline = "middle";
-            sCtx.lineWidth = 7;
-            sCtx.strokeStyle = "rgba(255,255,255,0.9)";
-            sCtx.strokeText(label, canvasW / 2, y0 + bandH / 2);
-            sCtx.fillStyle = joint.color;
-            sCtx.fillText(label, canvasW / 2, y0 + bandH / 2);
+            sCtx.fillText(`▲ 【${joint.colorName}】貼り合わせ線：次の紙の上のふちを、この線に合わせて貼る ▲`, canvasW / 2, joinY + glueH / 2);
             sCtx.restore();
           };
 
@@ -1361,14 +1374,14 @@
             const pageDiv = document.createElement("div");
             pageDiv.className = "print-page-a4";
 
-            const glueMm = s.bottomBand !== null ? BAND_MM : 0;
+            const glueMm = s.bottomJoint !== null ? GLUE_MM : 0;
             const sliceHeightMm = (s.endMm - s.startMm) + glueMm;
             const sliceCanvas = document.createElement("canvas");
             sliceCanvas.width = PAPER_W_MM * PX_PER_MM;
             sliceCanvas.height = sliceHeightMm * PX_PER_MM;
             const sCtx = sliceCanvas.getContext("2d");
 
-            // マスターキャンバスから該当領域（＋下の帯ぶん）を切り出し
+            // マスターキャンバスから該当領域（＋のりしろ重なり分）を切り出し
             sCtx.drawImage(
               masterCanvas,
               0, s.startMm * PX_PER_MM,
@@ -1376,10 +1389,9 @@
               0, 0,
               PAPER_W_MM * PX_PER_MM, sliceHeightMm * PX_PER_MM
             );
-            if (s.topBand !== null) drawBand(sCtx, 0, JOINTS[s.topBand], "top", sliceCanvas.width);
-            if (s.bottomBand !== null) drawBand(sCtx, s.endMm - s.startMm, JOINTS[s.bottomBand], "bottom", sliceCanvas.width);
+            if (s.bottomJoint !== null) drawGlue(sCtx, s.endMm - s.startMm, JOINTS[s.bottomJoint], sliceCanvas.width);
 
-            // 上部ヘッダー案内（余白内）。2枚目・3枚目は、帯の上のふちで切るので、この部分は切り落とされる
+            // 上部ヘッダー案内（余白内）。2枚目・3枚目は、この部分を切り落とす
             const headerInfo = document.createElement("div");
             headerInfo.style.cssText = "width:175mm; display:flex; justify-content:space-between; align-items:center; font-size:9pt; color:#374151; margin-bottom:1.5mm; font-family:sans-serif;";
             headerInfo.innerHTML = `
@@ -1388,10 +1400,23 @@
             `;
             pageDiv.appendChild(headerInfo);
 
-            const guide = document.createElement("div");
-            guide.style.cssText = "width:175mm; font-size:8.5pt; line-height:1.45; color:#111; font-weight:bold; margin-bottom:1mm; font-family:sans-serif;";
-            guide.textContent = s.guide;
-            pageDiv.appendChild(guide);
+            if (s.guide) {
+              const guide = document.createElement("div");
+              guide.style.cssText = "width:175mm; font-size:8.5pt; line-height:1.45; color:#111; font-weight:bold; margin-bottom:1mm; font-family:sans-serif;";
+              guide.textContent = s.guide;
+              pageDiv.appendChild(guide);
+            }
+
+            // 切る線：絵の上のふちにぴったりつけた、黒い太い実線。これより上を切り落とす
+            if (s.topJoint !== null) {
+              const j = JOINTS[s.topJoint];
+              const cut = document.createElement("div");
+              cut.style.cssText = "width:175mm; box-sizing:border-box; border-bottom:0.8mm solid #000; padding:0 0 1mm 0; font-family:sans-serif; text-align:center; line-height:1.3;";
+              cut.innerHTML = `
+                <div style="font-size:12pt; font-weight:bold; letter-spacing:0.5mm;">✂ - - - - - - ここを切る（この黒い線より上は切り落とす）- - - - - - ✂</div>
+                <div style="font-size:9pt; font-weight:bold; color:${j.color};">切ったら → 前の紙の【${j.colorName}の貼り合わせ線】に、切ったふちを合わせて貼る（▼ ここから下を使う）</div>`;
+              pageDiv.appendChild(cut);
+            }
 
             sliceCanvas.style.width = `${PAPER_W_MM}mm`;
             sliceCanvas.style.height = `${sliceHeightMm}mm`;
