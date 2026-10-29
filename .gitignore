@@ -1,0 +1,6 @@
+# 教材の原本（PDF）・生成の元データ・試作・一時ファイルは公開しない
+*.pdf
+gen_raw/
+gen_test/
+__pycache__/
+*.bak

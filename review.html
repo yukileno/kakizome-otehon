@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>筆書き画像の確認ページ（教員用）</title>
+  <style>
+    :root {
+      --bg: #f8f6f0; --card: #fff; --text: #1f2937; --muted: #6b7280; --border: #e5e0d5;
+      --ok: #15803d; --ok-bg: #dcfce7; --ng: #b91c1c; --ng-bg: #fee2e2; --accent: #1d4ed8;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: "UD デジタル 教科書体 N-R", "BIZ UDPGothic", "Meiryo", sans-serif; background: var(--bg); color: var(--text); line-height: 1.5; }
+    header { position: sticky; top: 0; z-index: 10; background: #881313; color: #fff; padding: 10px 16px; }
+    header h1 { margin: 0; font-size: 1.05rem; }
+    .bar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 6px; font-size: 0.85rem; }
+    .bar button, .bar select { font: inherit; padding: 4px 10px; border-radius: 8px; border: 0; cursor: pointer; }
+    .bar button.primary { background: #fff; color: #881313; font-weight: bold; }
+    .guide { max-width: 1100px; margin: 12px auto 0; padding: 0 16px; font-size: 0.88rem; color: var(--muted); }
+    main { max-width: 1100px; margin: 12px auto 40px; padding: 0 16px; display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 14px; }
+    .card { background: var(--card); border: 2px solid var(--border); border-radius: 12px; padding: 10px; display: flex; flex-direction: column; gap: 6px; }
+    .card.ok { border-color: var(--ok); background: #f6fdf8; }
+    .card.ng { border-color: var(--ng); background: #fff7f7; }
+    .word { font-size: 1.15rem; font-weight: bold; display: flex; justify-content: space-between; align-items: baseline; }
+    .word small { font-weight: normal; color: var(--muted); font-size: 0.75rem; }
+    .imgbox { background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 8px; height: 360px; display: flex; justify-content: center; align-items: center; }
+    .imgbox img { max-width: 100%; max-height: 100%; object-fit: contain; cursor: zoom-in; }
+    .btns { display: flex; gap: 6px; }
+    .btns button { flex: 1; font: inherit; font-weight: bold; padding: 6px; border-radius: 8px; border: 2px solid var(--border); background: #fff; cursor: pointer; }
+    .btns .okb.on { background: var(--ok-bg); border-color: var(--ok); color: var(--ok); }
+    .btns .ngb.on { background: var(--ng-bg); border-color: var(--ng); color: var(--ng); }
+    .memo { font: inherit; font-size: 0.85rem; padding: 4px 6px; border: 1px solid var(--border); border-radius: 6px; width: 100%; }
+    dialog { border: 0; padding: 0; background: transparent; max-width: 96vw; max-height: 96vh; }
+    dialog::backdrop { background: rgba(0,0,0,0.7); }
+    dialog img { max-height: 94vh; max-width: 94vw; background: #fff; padding: 12px; border-radius: 10px; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>筆書き画像の確認ページ（教員用）</h1>
+    <div class="bar">
+      <span id="stat"></span>
+      <select id="filter">
+        <option value="all">すべて表示</option>
+        <option value="todo">未確認だけ</option>
+        <option value="ng">NGだけ</option>
+        <option value="ok">OKだけ</option>
+      </select>
+      <button class="primary" id="exportBtn">確認結果を書き出す</button>
+    </div>
+  </header>
+
+  <p class="guide">
+    字形（点・はね・払い・画数・部首の形）が、お手本として正しいかを確認して、<b>OK</b> か <b>NG</b> を押してください。
+    NG のときは、どこがおかしいかをメモに書くと、作り直しに役立ちます。画像をクリックすると大きく見られます。
+    結果はこのパソコンのブラウザに保存されます（別のパソコンには引きつがれません）。確認が終わったら「確認結果を書き出す」で、NG の一覧をコピーして伝えてください。
+  </p>
+
+  <main id="list"></main>
+  <dialog id="zoom"><img id="zoomImg" alt=""></dialog>
+
+  <script src="img/manifest.js"></script>
+  <script>
+    const KEY = "kakizome_review_v1";
+    let store = {};
+    try { store = JSON.parse(localStorage.getItem(KEY) || "{}"); } catch (e) { store = {}; }
+    function save() { try { localStorage.setItem(KEY, JSON.stringify(store)); } catch (e) { /* 保存できなくても表示は続ける */ } }
+
+    const words = Object.keys(window.GEN_IMAGES);
+    const list = document.getElementById("list");
+
+    function render() {
+      const f = document.getElementById("filter").value;
+      list.innerHTML = "";
+      words.forEach((w, i) => {
+        const s = store[w] || {};
+        if (f === "todo" && s.status) return;
+        if ((f === "ok" || f === "ng") && s.status !== f) return;
+        const card = document.createElement("div");
+        card.className = "card" + (s.status ? " " + s.status : "");
+        card.innerHTML = `
+          <div class="word"><span></span><small>${i + 1}</small></div>
+          <div class="imgbox"><img alt=""></div>
+          <div class="btns"><button class="okb ${s.status === "ok" ? "on" : ""}">OK</button><button class="ngb ${s.status === "ng" ? "on" : ""}">NG</button></div>
+          <input class="memo" type="text" placeholder="メモ（NGのとき：どこがおかしいか）">`;
+        card.querySelector(".word span").textContent = w;
+        const img = card.querySelector("img");
+        img.src = window.GEN_IMAGES[w].src;
+        img.alt = w;
+        img.addEventListener("click", () => { document.getElementById("zoomImg").src = img.src; document.getElementById("zoom").showModal(); });
+        const memo = card.querySelector(".memo");
+        memo.value = s.memo || "";
+        memo.addEventListener("input", () => { (store[w] = store[w] || {}).memo = memo.value; save(); });
+        card.querySelector(".okb").addEventListener("click", () => setStatus(w, "ok"));
+        card.querySelector(".ngb").addEventListener("click", () => setStatus(w, "ng"));
+        list.appendChild(card);
+      });
+      updateStat();
+    }
+
+    function setStatus(w, st) {
+      const s = store[w] = store[w] || {};
+      s.status = (s.status === st) ? "" : st; // もう一度押すと取り消し
+      save();
+      render();
+    }
+
+    function updateStat() {
+      const ok = words.filter(w => (store[w] || {}).status === "ok").length;
+      const ng = words.filter(w => (store[w] || {}).status === "ng").length;
+      document.getElementById("stat").textContent = `全${words.length}件 ／ OK ${ok} ／ NG ${ng} ／ 未確認 ${words.length - ok - ng}`;
+    }
+
+    document.getElementById("filter").addEventListener("change", render);
+    document.getElementById("zoom").addEventListener("click", e => e.currentTarget.close());
+
+    document.getElementById("exportBtn").addEventListener("click", async () => {
+      const line = (w) => w + ((store[w] || {}).memo ? "（" + store[w].memo + "）" : "");
+      const ng = words.filter(w => (store[w] || {}).status === "ng").map(line);
+      const todo = words.filter(w => !(store[w] || {}).status);
+      const ok = words.filter(w => (store[w] || {}).status === "ok");
+      const text = `【筆書き画像の確認結果】\nOK ${ok.length}件 / NG ${ng.length}件 / 未確認 ${todo.length}件\n\n■ NG（作り直し）\n${ng.join("\n") || "なし"}\n\n■ 未確認\n${todo.join("、") || "なし"}\n\n■ OK\n${ok.join("、") || "なし"}\n`;
+      try { await navigator.clipboard.writeText(text); alert("確認結果をコピーしました。そのまま貼りつけて伝えてください。\n\n" + text); }
+      catch (e) { prompt("下の文字を全部コピーして伝えてください", text); }
+    });
+
+    render();
+  </script>
+</body>
+</html>

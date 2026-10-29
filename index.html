@@ -1,0 +1,1471 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>書き初めお手本メーカー（八つ切り 17.5cm×68cm 対応）</title>
+  <!-- 名前・学年の字だけ使う無料Webフォント（本字は筆書き画像）。オフライン時はOS標準の教科書体へ自動フォールバック -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Klee+One:wght@600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #b91c1c;
+      --primary-light: #fef2f2;
+      --primary-dark: #7f1d1d;
+      --accent: #1d4ed8;
+      --accent-light: #eff6ff;
+      --bg: #f8f6f0;
+      --card: #ffffff;
+      --text: #1f2937;
+      --muted: #6b7280;
+      --border: #e5e0d5;
+      --radius: 14px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: "UD デジタル 教科書体 N-R", "UD Digi Kyokasho N-R", "BIZ UDPGothic", "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+    }
+
+    /* ヘッダー */
+    .app-header {
+      background: linear-gradient(135deg, #881313 0%, #b91c1c 100%);
+      color: #fff;
+      padding: 14px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+    }
+
+    .app-title {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .app-title h1 {
+      margin: 0;
+      font-size: 1.35rem;
+      letter-spacing: 0.04em;
+    }
+
+    .badge-size {
+      background: rgba(255, 255, 255, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      font-weight: bold;
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .btn-mode {
+      background: rgba(255, 255, 255, 0.15);
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      padding: 7px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 0.88rem;
+      transition: all 0.15s;
+    }
+
+    .btn-mode:hover, .btn-mode.active {
+      background: #fff;
+      color: var(--primary-dark);
+    }
+
+    /* メインレイアウト */
+    .main-container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 20px;
+      display: grid;
+      grid-template-columns: 1fr 440px;
+      gap: 24px;
+      align-items: start;
+    }
+
+    @media (max-width: 960px) {
+      .main-container {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* ステップカード */
+    .step-card {
+      background: var(--card);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      padding: 20px 22px;
+      margin-bottom: 18px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+    }
+
+    .step-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 14px;
+      border-bottom: 2px solid #f3efe6;
+      padding-bottom: 10px;
+    }
+
+    .step-num {
+      background: var(--primary);
+      color: #fff;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 0.95rem;
+      flex-shrink: 0;
+    }
+
+    .step-title {
+      font-size: 1.15rem;
+      font-weight: bold;
+      margin: 0;
+      color: #111827;
+    }
+
+    /* 学年ボタン */
+    .grade-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(82px, 1fr));
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    .grade-btn {
+      padding: 10px 6px;
+      border: 2px solid var(--border);
+      background: #fff;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.15s;
+      color: var(--text);
+    }
+
+    .grade-btn:hover {
+      border-color: var(--primary);
+      background: var(--primary-light);
+    }
+
+    .grade-btn.active {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+    }
+
+    /* 入力フォーム */
+    .input-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    @media (max-width: 600px) {
+      .input-row {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .form-group label {
+      font-size: 0.9rem;
+      font-weight: bold;
+      color: #374151;
+    }
+
+    .form-input {
+      padding: 11px 14px;
+      font-size: 1.1rem;
+      border: 2px solid #d1d5db;
+      border-radius: 10px;
+      font-family: inherit;
+      transition: border-color 0.15s;
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(185, 28, 28, 0.12);
+    }
+
+    /* 課題ワード選択チップ */
+    .category-tabs {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+
+    .cat-tab {
+      padding: 6px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: #f9fafb;
+      font-size: 0.85rem;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .cat-tab.active {
+      background: #1f2937;
+      color: #fff;
+      border-color: #1f2937;
+    }
+
+    .word-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(128px, 1fr));
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .word-btn {
+      padding: 12px 10px;
+      border: 2px solid var(--border);
+      background: #fffdf9;
+      border-radius: 10px;
+      font-size: 1.25rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.15s;
+      font-family: "Klee One", "HG正楷書体-PRO", "UD デジタル 教科書体 N-R", serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+    }
+
+    .word-btn span.word-sub {
+      font-size: 0.72rem;
+      color: var(--muted);
+      font-family: sans-serif;
+      font-weight: normal;
+    }
+
+    .word-btn:hover {
+      border-color: var(--primary);
+      background: var(--primary-light);
+      transform: translateY(-1px);
+    }
+
+    .word-btn.active {
+      background: var(--primary-light);
+      border-color: var(--primary);
+      color: var(--primary-dark);
+      box-shadow: 0 0 0 2px rgba(185, 28, 28, 0.2);
+    }
+
+    /* オプション設定 */
+    .options-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 12px;
+      margin-top: 10px;
+    }
+
+    .option-box {
+      background: #f9fafb;
+      border: 1px solid #e5e7eb;
+      border-radius: 10px;
+      padding: 10px 12px;
+    }
+
+    .option-box label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: bold;
+      margin-bottom: 6px;
+      color: #374151;
+    }
+
+    .option-box select, .option-box input[type="range"] {
+      width: 100%;
+      padding: 6px;
+      border-radius: 6px;
+      border: 1px solid #d1d5db;
+      font-size: 0.95rem;
+    }
+
+    .checkbox-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-top: 12px;
+    }
+
+    .checkbox-label {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.92rem;
+      font-weight: bold;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .checkbox-label input {
+      width: 18px;
+      height: 18px;
+      accent-color: var(--primary);
+    }
+
+    /* 文字ごとの微調整アコーディオン */
+    details.char-adjust {
+      margin-top: 14px;
+      background: #fffbeb;
+      border: 1px solid #fde68a;
+      border-radius: 10px;
+      padding: 10px 14px;
+    }
+
+    details.char-adjust summary {
+      font-weight: bold;
+      font-size: 0.92rem;
+      cursor: pointer;
+      color: #92400e;
+    }
+
+    .char-sliders {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .char-slider-item {
+      background: #fff;
+      border: 1px solid #fcd34d;
+      border-radius: 8px;
+      padding: 8px 10px;
+      font-size: 0.85rem;
+    }
+
+    /* 印刷ボタン群 */
+    .print-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    @media (max-width: 600px) {
+      .print-actions {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .btn-print-main {
+      background: linear-gradient(135deg, #b91c1c 0%, #991b1b 100%);
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      padding: 16px 18px;
+      font-size: 1.1rem;
+      font-weight: bold;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      box-shadow: 0 4px 12px rgba(185, 28, 28, 0.28);
+      transition: transform 0.12s, box-shadow 0.12s;
+    }
+
+    .btn-print-main:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(185, 28, 28, 0.36);
+    }
+
+    .btn-print-sub {
+      background: #fff;
+      color: #1f2937;
+      border: 2px solid #1f2937;
+      border-radius: 12px;
+      padding: 16px 18px;
+      font-size: 1.05rem;
+      font-weight: bold;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      transition: background 0.12s;
+    }
+
+    .btn-print-sub:hover {
+      background: #f3f4f6;
+    }
+
+    .btn-subtext {
+      font-size: 0.78rem;
+      font-weight: normal;
+      opacity: 0.9;
+    }
+
+    /* 右カラム：プレビューパネル */
+    .preview-panel {
+      background: var(--card);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      padding: 18px;
+      position: sticky;
+      top: 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+
+    .preview-header {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .preview-title {
+      font-weight: bold;
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .preview-dimensions {
+      font-size: 0.8rem;
+      color: var(--muted);
+      background: #f3f4f6;
+      padding: 3px 8px;
+      border-radius: 6px;
+    }
+
+    .canvas-wrapper {
+      background: #e5e0d5;
+      padding: 16px;
+      border-radius: 10px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      overflow: hidden;
+    }
+
+    #previewCanvas {
+      background: #fff;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.18);
+      max-height: 74vh;
+      width: auto;
+      height: auto;
+      max-width: 100%;
+      display: block;
+    }
+
+    .preview-help {
+      margin-top: 12px;
+      font-size: 0.82rem;
+      color: #4b5563;
+      background: #f9fafb;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      padding: 10px 12px;
+      width: 100%;
+    }
+
+    /* 新しいバージョンのお知らせ */
+    .update-bar {
+      position: fixed; left: 50%; bottom: 16px; transform: translateX(-50%); z-index: 9999;
+      display: flex; align-items: center; gap: 12px; padding: 10px 16px;
+      background: #1e293b; color: #fff; border: 2px solid #fde047; border-radius: 999px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35); font-size: 0.95rem;
+    }
+    .update-bar button { font: inherit; padding: 6px 14px; border-radius: 999px; border: 0; cursor: pointer; background: #fde047; color: #1e293b; font-weight: bold; }
+
+    /* 印刷専用エリア（通常画面では非表示） */
+    #printMount {
+      display: none;
+    }
+
+    @media print {
+      @page {
+        size: A4 portrait;
+        margin: 0;
+      }
+
+      body {
+        background: #fff !important;
+        margin: 0 !important;
+        padding: 0 !important;
+      }
+
+      .app-header,
+      .main-container {
+        display: none !important;
+      }
+
+      #printMount {
+        display: block !important;
+        width: 100%;
+      }
+
+      .print-page-a4 {
+        width: 210mm;
+        height: 296.5mm;
+        page-break-after: always;
+        break-after: page;
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        padding-top: 8mm;
+        box-sizing: border-box;
+      }
+
+      .print-page-a4:last-child {
+        page-break-after: auto;
+        break-after: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ヘッダー -->
+  <header class="app-header">
+    <div class="app-title">
+      <span style="font-size: 1.7rem;">🖌️</span>
+      <div>
+        <h1>書き初めお手本メーカー</h1>
+      </div>
+      <span class="badge-size">八つ切り（17.5cm × 68cm）実寸対応</span>
+    </div>
+  </header>
+
+  <div class="main-container">
+    <!-- 左カラム：操作ステップ -->
+    <div class="controls-column">
+
+      <!-- ステップ1：学年と名前 -->
+      <section class="step-card">
+        <div class="step-header">
+          <span class="step-num">1</span>
+          <h2 class="step-title">学年と名前を入れよう</h2>
+        </div>
+
+        <label style="font-size:0.88rem; font-weight:bold; color:#374151; display:block; margin-bottom:6px;">学年をえらぶ</label>
+        <div class="grade-grid" id="gradeGrid">
+          <button type="button" class="grade-btn" data-grade="一年">一年</button>
+          <button type="button" class="grade-btn" data-grade="二年">二年</button>
+          <button type="button" class="grade-btn" data-grade="三年">三年</button>
+          <button type="button" class="grade-btn" data-grade="四年">四年</button>
+          <button type="button" class="grade-btn active" data-grade="五年">五年</button>
+          <button type="button" class="grade-btn" data-grade="六年">六年</button>
+        </div>
+
+        <div class="input-row">
+          <div class="form-group">
+            <label for="gradeInput">学年・組の表示（自由にかえられます）</label>
+            <input type="text" id="gradeInput" class="form-input" value="五年" placeholder="例：五年 / 五年一組">
+          </div>
+          <div class="form-group">
+            <label for="nameInput">名前（苗字と名前の間にスペースを入れるときれいです）</label>
+            <input type="text" id="nameInput" class="form-input" value="書道 太郎" placeholder="例：山田 花子">
+          </div>
+        </div>
+
+        <div class="options-grid" style="margin-top: 12px;">
+          <div class="option-box">
+            <label for="gradeOffsetYRange">学年の高さ調整（上 ⇔ 下）</label>
+            <input type="range" id="gradeOffsetYRange" min="-60" max="200" step="5" value="0">
+          </div>
+          <div class="option-box">
+            <label for="gradeOffsetXRange">学年・名前の左右の位置（左 ⇔ 右）</label>
+            <input type="range" id="gradeOffsetXRange" min="-4" max="30" step="1" value="0">
+          </div>
+          <div class="option-box">
+            <label for="nameOffsetYRange">名前の高さ調整（上 ⇔ 下）</label>
+            <input type="range" id="nameOffsetYRange" min="-120" max="160" step="5" value="0">
+          </div>
+          <div class="option-box">
+            <label for="nameStepRange">名前の文字間隔（せまい ⇔ ひろい）</label>
+            <input type="range" id="nameStepRange" min="0.8" max="1.6" step="0.05" value="1.0">
+          </div>
+          <div class="option-box">
+            <label for="nameScaleRange">学年・名前の大きさ</label>
+            <input type="range" id="nameScaleRange" min="0.75" max="1.35" step="0.05" value="1.0">
+          </div>
+        </div>
+      </section>
+
+      <!-- ステップ2：書く文字を選ぶ -->
+      <section class="step-card">
+        <div class="step-header">
+          <span class="step-num">2</span>
+          <h2 class="step-title">書く文字（課題）をえらぼう</h2>
+        </div>
+
+        <div class="category-tabs" id="categoryTabs">
+          <!-- JSで動的生成 -->
+        </div>
+
+        <div class="word-grid" id="wordGrid">
+          <!-- JSで動的生成 -->
+        </div>
+
+        <input type="hidden" id="mainTextInput" value="新しい風">
+
+        <!-- お手本スタイル調整 -->
+        <div class="options-grid">
+          <div class="option-box">
+            <label for="genScaleRange">字の大きさ：<span id="genScaleVal">100%</span></label>
+            <input type="range" id="genScaleRange" min="0.8" max="1.2" step="0.01" value="1">
+          </div>
+
+          <div class="option-box">
+            <label for="genOffsetXRange">字の左右の位置：<span id="genOffsetXVal">0mm</span></label>
+            <input type="range" id="genOffsetXRange" min="-20" max="20" step="1" value="0">
+          </div>
+
+          <div class="option-box">
+            <label for="styleSelect">お手本の種類</label>
+            <select id="styleSelect">
+              <option value="solid">黒文字（見本として横に置く・下に敷く）</option>
+              <option value="gray">うす墨グレー（なぞり書き・敷き写し用）</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="checkbox-row">
+          <label class="checkbox-label">
+            <input type="checkbox" id="showCenterLine" checked>
+            中心線・マス目ガイド線を表示する
+          </label>
+          <label class="checkbox-label">
+            <input type="checkbox" id="showFoldMarks" checked>
+            紙の折り目目印（余白・文字区切り）を表示する
+          </label>
+        </div>
+
+      </section>
+
+      <!-- ステップ3：印刷する -->
+      <section class="step-card">
+        <div class="step-header">
+          <span class="step-num">3</span>
+          <h2 class="step-title">お手本を印刷しよう</h2>
+        </div>
+
+        <p style="margin: 0 0 10px 0; font-size: 0.92rem; color: #374151;">
+          学校のA4プリンターで<strong>「原寸（17.5cm × 68cm）」</strong>または<strong>「A4・1枚縮小」</strong>のどちらでも印刷できます。
+        </p>
+
+        <div class="print-actions">
+          <button type="button" class="btn-print-main" onclick="printSingle('real3')">
+            <span>🖨️ 実寸大で印刷する（A4 × 3枚貼り合わせ）</span>
+            <span class="btn-subtext">17.5cm × 68cm ぴったり！下に敷いて練習もできます</span>
+          </button>
+
+          <button type="button" class="btn-print-sub" onclick="printSingle('fit1')">
+            <span>📄 A4用紙 1枚に縮小して印刷する</span>
+            <span class="btn-subtext">のり貼り不要！机の横に置いて見ながら書く用</span>
+          </button>
+        </div>
+
+        <div style="margin-top: 12px; font-size: 0.82rem; color: #6b7280; background: #fff8f6; border: 1px solid #fecaca; padding: 10px 12px; border-radius: 8px;">
+          💡 <strong>実寸大（17.5cm × 68cm）で印刷するときのコツ：</strong><br>
+          印刷画面の「詳細設定」で、倍率を<strong>「100%（実際のサイズ / 拡大縮小なし）」</strong>にすると、八つ切り用紙とミリ単位でピタッと重なります。
+        </div>
+      </section>
+
+    </div>
+
+    <!-- 右カラム：リアルタイムプレビュー -->
+    <aside class="preview-panel">
+      <div class="preview-header">
+        <div class="preview-title">
+          <span>📜</span>
+          <span>八つ切りお手本プレビュー</span>
+        </div>
+        <span class="preview-dimensions">横 17.5cm × 縦 68.0cm</span>
+        <button type="button" id="resetBtn" style="font:inherit; font-size:0.85rem; padding:4px 10px; border-radius:8px; border:1px solid #d1d5db; background:#fff; cursor:pointer;">↺ 調整を初期値にもどす</button>
+      </div>
+
+      <div class="canvas-wrapper">
+        <!-- 175mm x 680mm の高解像度マスターキャンバス (1mm = 8px -> 1400 x 5440) -->
+        <canvas id="previewCanvas" width="1400" height="5440"></canvas>
+      </div>
+
+      <div class="preview-help">
+        <strong>📏 八つ切り（17.5×68cm）の黄金レイアウト自動計算中：</strong><br>
+        ・上下余白：各 4.5cm ／ 文字エリア：縦 59.0cm<br>
+        ・右側の課題エリア：幅 12.2cm ／ 左側の学年・氏名エリア：幅 5.3cm<br>
+        ・赤い破線は<strong>A4・3枚分割印刷のつなぎ目（23cm / 46cm）</strong>の目安です。
+      </div>
+    </aside>
+  </div>
+
+  <!-- 印刷用マウント領域 -->
+  <div id="printMount"></div>
+
+  <script src="img/manifest.js"></script>
+  <script>
+    // =========================================================================
+    // 1. 学年別・定番の書き初め課題プリセットデータ
+    // =========================================================================
+    const PRESET_WORDS = {
+      "三年": [
+        { word: "お正月", sub: "3年定番" },
+        { word: "つよい子", sub: "3年定番" },
+        { word: "友だち", sub: "3年定番" },
+        { word: "あさ日", sub: "3年定番" },
+        { word: "元気な子", sub: "3年定番" },
+        { word: "美しい心", sub: "3年定番" },
+        { word: "ふじ山", sub: "3年定番" },
+        { word: "はるの空", sub: "3年定番" }
+      ],
+      "四年": [
+        { word: "明るい心", sub: "4年定番" },
+        { word: "春の海", sub: "4年定番" },
+        { word: "元気な子", sub: "4年定番" },
+        { word: "流れる星", sub: "4年定番" },
+        { word: "美しい空", sub: "4年定番" },
+        { word: "世界の友", sub: "4年定番" },
+        { word: "光る虹", sub: "4年定番" },
+        { word: "希望の朝", sub: "4年定番" }
+      ],
+      "五年": [
+        { word: "光る大地", sub: "中日書き初めコンクール" },
+        { word: "新しい風", sub: "5年定番" },
+        { word: "希望の朝", sub: "5年定番" },
+        { word: "春の富士", sub: "5年定番" },
+        { word: "世界の国", sub: "5年定番" },
+        { word: "強い信念", sub: "5年定番" },
+        { word: "輝く未来", sub: "5年定番" },
+        { word: "進む勇気", sub: "5年定番" },
+        { word: "美しい山", sub: "5年定番" },
+        { word: "初日の出", sub: "5年定番" },
+        { word: "光る未来", sub: "5年定番" },
+        { word: "春の足音", sub: "5年定番" },
+        { word: "平和な国", sub: "5年定番" },
+        { word: "美しい空", sub: "5年定番" },
+        { word: "明るい心", sub: "5年定番" },
+        { word: "未来の夢", sub: "5年定番" },
+        { word: "希望の道", sub: "5年定番" },
+        { word: "大きな夢", sub: "5年定番" },
+        { word: "新しい道", sub: "5年定番" },
+        { word: "夢の実現", sub: "5年定番" },
+        { word: "希望の光", sub: "5年定番" },
+        { word: "目標達成", sub: "5年定番" },
+        { word: "全力投球", sub: "5年定番" },
+        { word: "有言実行", sub: "5年定番" },
+        { word: "不言実行", sub: "5年定番" },
+        { word: "感謝の心", sub: "5年定番" },
+        { word: "一致団結", sub: "5年定番" }
+      ],
+      "六年": [
+        { word: "夢の実現", sub: "6年定番" },
+        { word: "伝統を守る", sub: "6年定番" },
+        { word: "新春の光", sub: "6年定番" },
+        { word: "平和な国", sub: "6年定番" },
+        { word: "強い決意", sub: "6年定番" },
+        { word: "未来の夢", sub: "6年定番" },
+        { word: "感謝の心", sub: "6年定番" },
+        { word: "希望の道", sub: "6年定番" }
+      ],
+      "四字熟語・抱負": [
+        { word: "一所懸命", sub: "四字熟語" },
+        { word: "日進月歩", sub: "四字熟語" },
+        { word: "温故知新", sub: "四字熟語" },
+        { word: "初志貫徹", sub: "四字熟語" },
+        { word: "七転八起", sub: "四字熟語" },
+        { word: "切磋琢磨", sub: "四字熟語" },
+        { word: "不言実行", sub: "四字熟語" },
+        { word: "全力投球", sub: "四字熟語" }
+      ],
+      "一年": [
+        { word: "お日さま", sub: "1・2年" },
+        { word: "あかるい", sub: "1・2年" },
+        { word: "げんき", sub: "1・2年" },
+        { word: "なかよし", sub: "1・2年" },
+        { word: "おしょうがつ", sub: "1・2年" },
+        { word: "はるの空", sub: "1・2年" }
+      ],
+      "二年": [
+        { word: "元気な子", sub: "2年" },
+        { word: "青い空", sub: "2年" },
+        { word: "お正月", sub: "2年" },
+        { word: "あたらしい朝", sub: "2年" },
+        { word: "ともだち", sub: "2年" },
+        { word: "はるの風", sub: "2年" }
+      ],
+      "中学": [
+        { word: "不言実行", sub: "中学定番" },
+        { word: "温故知新", sub: "中学定番" },
+        { word: "初志貫徹", sub: "中学定番" },
+        { word: "無限の力", sub: "中学定番" },
+        { word: "新たな決意", sub: "中学定番" },
+        { word: "早春の風", sub: "中学定番" }
+      ]
+    };
+
+    // 状態管理
+    let currentCategory = "五年";
+
+    // 名前・学年の字だけは、フォントで描く（本字は筆書き画像）
+    const NAME_FONT = '"Klee One", "HG正楷書体-PRO", "UD デジタル 教科書体 N-R", "游教科書体", serif';
+    const NAME_EXTRA_WEIGHT = 2.5; // 筆の太さ（太らせる量）
+
+    // 物理サイズ定数 (八つ切り: 175mm x 680mm)
+    const PAPER_W_MM = 175;
+    const PAPER_H_MM = 680;
+    const PX_PER_MM = 8; // 1400px x 5440px (高精細印刷対応)
+
+    // =========================================================================
+    // 2. 初期化・URLパラメータ読み込み
+    // =========================================================================
+    window.addEventListener("DOMContentLoaded", () => {
+      loadGradeFromUrl();
+      setupUpdateCheck();
+      renderCategoryTabs();
+      renderWordButtons();
+      bindEvents();
+
+      // Webフォント読み込み完了後に再描画
+      if (document.fonts && document.fonts.ready) {
+        document.fonts.ready.then(() => {
+          renderPreview();
+        });
+      }
+      renderPreview();
+    });
+
+    function loadGradeFromUrl() {
+      const urlGrade = new URLSearchParams(window.location.search).get("grade");
+      if (urlGrade) {
+        document.getElementById("gradeInput").value = urlGrade;
+        document.querySelectorAll(".grade-btn").forEach(btn => {
+          btn.classList.toggle("active", btn.dataset.grade === urlGrade);
+        });
+      }
+    }
+
+    // 位置・大きさなどの調整を、すべて初期値にもどす（学年・名前・課題は変えない）
+    function resetAdjustments() {
+      const defaults = {
+        gradeOffsetYRange: "0", gradeOffsetXRange: "0",
+        nameOffsetYRange: "0", nameStepRange: "1", nameScaleRange: "1",
+        genScaleRange: "1", genOffsetXRange: "0", styleSelect: "solid"
+      };
+      Object.entries(defaults).forEach(([id, v]) => { document.getElementById(id).value = v; });
+      document.getElementById("showCenterLine").checked = true;
+      document.getElementById("showFoldMarks").checked = true;
+      renderPreview();
+    }
+
+    function bindEvents() {
+      document.getElementById("resetBtn").addEventListener("click", resetAdjustments);
+
+      // 学年ボタン
+      document.querySelectorAll(".grade-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+          document.querySelectorAll(".grade-btn").forEach(b => b.classList.remove("active"));
+          btn.classList.add("active");
+          const g = btn.dataset.grade;
+          document.getElementById("gradeInput").value = g === "中学" ? "一" : g;
+          if (PRESET_WORDS[g]) {
+            currentCategory = g;
+            renderCategoryTabs();
+            renderWordButtons();
+          }
+          renderPreview();
+        });
+      });
+
+      // 入力フィールド監視
+      ["gradeInput", "nameInput", "gradeOffsetYRange", "gradeOffsetXRange", "nameOffsetYRange", "nameStepRange", "nameScaleRange", "genScaleRange", "genOffsetXRange", "styleSelect", "showCenterLine", "showFoldMarks"].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+          el.addEventListener("input", renderPreview);
+          el.addEventListener("change", renderPreview);
+        }
+      });
+
+    }
+
+    // =========================================================================
+    // 3. 課題タブ＆ボタン描画
+    // =========================================================================
+    function renderCategoryTabs() {
+      const container = document.getElementById("categoryTabs");
+      const categories = [];
+      categories.push("三年", "四年", "五年", "六年", "四字熟語・抱負", "一年", "二年", "中学");
+
+      container.innerHTML = "";
+      categories.forEach(cat => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "cat-tab" + (cat === currentCategory ? " active" : "");
+        btn.textContent = cat + "の課題";
+        btn.onclick = () => {
+          currentCategory = cat;
+          renderCategoryTabs();
+          renderWordButtons();
+        };
+        container.appendChild(btn);
+      });
+    }
+
+    function renderWordButtons() {
+      const grid = document.getElementById("wordGrid");
+      grid.innerHTML = "";
+
+      const list = PRESET_WORDS[currentCategory] || PRESET_WORDS["五年"];
+
+      const currentWord = document.getElementById("mainTextInput").value.trim();
+
+      list.forEach(item => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "word-btn" + (item.word === currentWord ? " active" : "");
+        btn.innerHTML = `<span>${escapeHtml(item.word)}</span><span class="word-sub">${escapeHtml(item.sub)}</span>`;
+        btn.onclick = () => {
+          document.getElementById("mainTextInput").value = item.word;
+          highlightActiveWordButton();
+          renderPreview();
+        };
+        grid.appendChild(btn);
+      });
+    }
+
+    function highlightActiveWordButton() {
+      const currentWord = document.getElementById("mainTextInput").value.trim();
+      document.querySelectorAll(".word-btn").forEach(btn => {
+        const text = btn.querySelector("span").textContent;
+        btn.classList.toggle("active", text === currentWord);
+      });
+    }
+
+    // =========================================================================
+    // 4. 八つ切り（175mm × 680mm）お手本キャンバス描画エンジン
+    // =========================================================================
+    function isHiragana(ch) {
+      return /^[\u3040-\u309F]$/.test(ch);
+    }
+
+    function renderPreview() {
+      const canvas = document.getElementById("previewCanvas");
+      const config = getCurrentConfig();
+      drawOtehonToCanvas(canvas, config, true);
+      const note = document.getElementById("genImageNote");
+      if (note) note.textContent = (window.GEN_IMAGES && window.GEN_IMAGES[config.mainText]) ? "" : "この課題の筆書き画像がありません";
+      document.getElementById("genScaleVal").textContent = Math.round(config.genScale * 100) + "%";
+      document.getElementById("genOffsetXVal").textContent = (config.genOffsetXMm > 0 ? "+" : "") + config.genOffsetXMm + "mm";
+      ensureFontsLoaded(config);
+    }
+
+    // Googleフォントは日本語が分割配信なので、名前・学年の文字ぶんを明示的に読みこんでから描きなおす
+    const fontLoadDone = new Set();
+    function ensureFontsLoaded(cfg) {
+      if (!document.fonts || !document.fonts.load) return;
+      const text = Array.from(new Set((cfg.gradeText + cfg.nameText).replace(/[\s\u3000]/g, ""))).join("");
+      if (!text || fontLoadDone.has(text)) return;
+      fontLoadDone.add(text);
+      document.fonts.load('600 100px "Klee One"', text).catch(() => null).then(() => renderPreview());
+    }
+
+    function getCurrentConfig() {
+      return {
+        mainText: document.getElementById("mainTextInput").value.trim() || "新しい風",
+        gradeText: document.getElementById("gradeInput").value.trim(),
+        nameText: document.getElementById("nameInput").value.trim(),
+        gradeOffsetYMm: parseFloat(document.getElementById("gradeOffsetYRange")?.value) || 0,
+        gradeOffsetXMm: parseFloat(document.getElementById("gradeOffsetXRange")?.value) || 0,
+        nameOffsetYMm: parseFloat(document.getElementById("nameOffsetYRange")?.value) || 0,
+        nameStepRatio: parseFloat(document.getElementById("nameStepRange")?.value) || 1.0,
+        nameScale: parseFloat(document.getElementById("nameScaleRange")?.value) || 1.0,
+        genScale: parseFloat(document.getElementById("genScaleRange").value) || 1,
+        genOffsetXMm: parseFloat(document.getElementById("genOffsetXRange").value) || 0,
+        styleMode: document.getElementById("styleSelect").value, // solid | gray
+        showCenterLine: document.getElementById("showCenterLine").checked,
+        showFoldMarks: document.getElementById("showFoldMarks").checked
+      };
+    }
+
+    /**
+     * 八つ切り (175mm x 680mm) のお手本を Canvas に描画する
+     * @param {HTMLCanvasElement} canvas 1400 x 5440 (1mm = 8px)
+     * @param {Object} cfg 設定オブジェクト
+     * @param {boolean} isScreenPreview 画面プレビュー時はA4分割目印線を表示
+     */
+    function drawOtehonToCanvas(canvas, cfg, isScreenPreview) {
+      const ctx = canvas.getContext("2d");
+      const W = PAPER_W_MM * PX_PER_MM; // 1400
+      const H = PAPER_H_MM * PX_PER_MM; // 5440
+      canvas.width = W;
+      canvas.height = H;
+
+      // 背景（白）
+      ctx.fillStyle = "#ffffff";
+      ctx.fillRect(0, 0, W, H);
+
+      // 外枠線（八つ切り 175mm x 680mm 実寸枠）
+      ctx.strokeStyle = "#374151";
+      ctx.lineWidth = 1.2 * PX_PER_MM * 0.4;
+      ctx.strokeRect(2, 2, W - 4, H - 4);
+
+      // レイアウト寸法 (mm)
+      const topMarginMm = 45;    // 上余白 4.5cm
+      const bottomMarginMm = 45; // 下余白 4.5cm
+      const bodyHeightMm = PAPER_H_MM - topMarginMm - bottomMarginMm; // 590mm (59cm)
+
+      // 左右配分:
+      // 氏名欄があってもなくても、右側に課題文字、左側に学年・名前
+      const hasNameOrGrade = Boolean(cfg.gradeText || cfg.nameText);
+      const mainBaseXMm = hasNameOrGrade ? 100 : 87.5; // 右側10.5cm位置が課題の中心
+      const mainCenterXMm = mainBaseXMm + (cfg.genOffsetXMm || 0); // 「字の左右の位置」スライダーぶん、字も中心線も動かす
+      const nameCenterXMm = 16 + (cfg.gradeOffsetXMm || 0);  // 左から1.6cm位置が学年・名前の中心（スライダーで、学年も名前もいっしょに動く）
+      const splitLineXMm = 54;   // 名前エリアと本字エリアの境界目安 (左から5.4cm)
+
+      // 1. 補助線・ガイド線の描画
+      if (cfg.showCenterLine) {
+        ctx.save();
+        // 上下余白ライン
+        ctx.strokeStyle = "#9ca3af";
+        ctx.lineWidth = 2;
+        ctx.setLineDash([12, 12]);
+        drawLineMm(ctx, 8, topMarginMm, PAPER_W_MM - 8, topMarginMm);
+        drawLineMm(ctx, 8, PAPER_H_MM - bottomMarginMm, PAPER_W_MM - 8, PAPER_H_MM - bottomMarginMm);
+
+        // 本字の中心線（朱色風の破線）
+        ctx.strokeStyle = "rgba(220, 38, 38, 0.45)";
+        ctx.lineWidth = 2.5;
+        ctx.setLineDash([18, 14]);
+        drawLineMm(ctx, mainCenterXMm, 15, mainCenterXMm, PAPER_H_MM - 15);
+
+        // 名前欄の中心線
+        if (hasNameOrGrade) {
+          ctx.strokeStyle = "rgba(59, 130, 246, 0.35)";
+          ctx.lineWidth = 2;
+          ctx.setLineDash([14, 14]);
+          drawLineMm(ctx, nameCenterXMm, topMarginMm, nameCenterXMm, PAPER_H_MM - bottomMarginMm);
+        }
+        ctx.restore();
+      }
+
+      // 2. 本字（課題文字）：筆書き画像を、1文字ずつ縦いっぱいに並べる
+      const genImg = getGenImage(cfg.mainText);
+      if (genImg) {
+        drawGenImageMm(ctx, genImg, mainCenterXMm, topMarginMm, bodyHeightMm, cfg.styleMode === "gray", cfg.genScale);
+      }
+
+      // 上下余白の折り目マーク
+      if (cfg.showFoldMarks) {
+        drawFoldTriangleMm(ctx, PAPER_W_MM - 1.5, topMarginMm, "left");
+        drawFoldTriangleMm(ctx, PAPER_W_MM - 1.5, PAPER_H_MM - bottomMarginMm, "left");
+      }
+
+      // 3. 学年・氏名の描画（左側）
+      if (hasNameOrGrade) {
+        drawGradeAndNameMm(ctx, cfg, nameCenterXMm, topMarginMm, PAPER_H_MM - bottomMarginMm);
+      }
+
+      // 4. 画面プレビュー時は A4×3枚分割ライン (230mm / 460mm) を薄く表示
+      if (isScreenPreview) drawSplitGuides(ctx);
+    }
+
+    function drawSplitGuides(ctx) {
+      {
+        ctx.save();
+        ctx.strokeStyle = "rgba(220, 38, 38, 0.55)";
+        ctx.lineWidth = 2.5;
+        ctx.setLineDash([6, 6]);
+        [230, 460].forEach((yMm, i) => {
+          drawLineMm(ctx, 0, yMm, PAPER_W_MM, yMm);
+          ctx.fillStyle = "rgba(185, 28, 28, 0.85)";
+          ctx.font = `bold ${4.2 * PX_PER_MM}px sans-serif`;
+          ctx.textAlign = "left";
+          ctx.textBaseline = "bottom";
+          ctx.fillText(`✂ A4つなぎ目 ${i + 1} (${yMm / 10}cm)`, 4 * PX_PER_MM, (yMm - 1.5) * PX_PER_MM);
+        });
+        ctx.restore();
+      }
+    }
+
+    // ---- 筆書き画像（Flow生成）の読みこみと描画 ----
+    const genImageCache = {};
+    function getGenImage(text) {
+      const info = window.GEN_IMAGES && window.GEN_IMAGES[text];
+      if (!info) return null;
+      let e = genImageCache[info.src];
+      if (!e) {
+        e = genImageCache[info.src] = { img: new Image(), ready: false, segs: info.segs };
+        e.img.onload = () => { e.ready = true; renderPreview(); };
+        e.img.src = info.src;
+      }
+      return e.ready ? e : null;
+    }
+
+    function drawGenImageMm(ctx, e, cxMm, topMm, bodyHMm, tint, scale) {
+      const img = e.img;
+      const maxW = 142 * PX_PER_MM, bodyH = bodyHMm * PX_PER_MM;
+      const segs = e.segs; // 1文字ごとの縦の範囲。なければ画像全体を1かたまりで置く
+      let target = ctx, t = null;
+      if (tint) {
+        t = document.createElement("canvas");
+        t.width = ctx.canvas.width; t.height = ctx.canvas.height;
+        target = t.getContext("2d");
+      }
+      if (!segs) {
+        const k = Math.min(maxW / img.width, bodyH / img.height) * (scale || 1);
+        const w = img.width * k, h = img.height * k;
+        target.drawImage(img, cxMm * PX_PER_MM - w / 2, topMm * PX_PER_MM + (bodyH - h) / 2, w, h);
+      } else {
+        // 文字の大きさは、横幅に収まる範囲でいちばん大きく。文字のあいだは、縦いっぱいに等間隔
+        const slotH = bodyH / segs.length;
+        const maxSegH = Math.max(...segs.map(([y0, y1]) => y1 - y0));
+        const maxCharW = Math.max(...segs.map(([y0, y1, x0, x1]) => x1 - x0));
+        // 縦横比は変えない。いちばん幅の広い字が maxW に収まる大きさ（縦の枠からはみ出さない範囲）
+        const k = Math.min(maxW / maxCharW, slotH * 0.96 / maxSegH) * (scale || 1);
+        segs.forEach(([y0, y1, x0, x1], i) => {
+          const h = (y1 - y0) * k;
+          const cy = topMm * PX_PER_MM + slotH * (i + 0.5);
+          // 各文字の左右の中心を、中心線にそろえる
+          const dx = cxMm * PX_PER_MM - ((x0 + x1) / 2) * k;
+          target.drawImage(img, 0, y0, img.width, y1 - y0, dx, cy - h / 2, img.width * k, h);
+        });
+      }
+      if (tint) {
+        target.globalCompositeOperation = "source-in";
+        target.fillStyle = "#9ca3af";
+        target.fillRect(0, 0, t.width, t.height);
+        ctx.drawImage(t, 0, 0);
+      }
+    }
+
+    /**
+     * 学年と名前を縦書きでバランスよく配置
+     */
+    function drawGradeAndNameMm(ctx, cfg, centerXMm, topMm, bottomMm) {
+      const gradeChars = Array.from(cfg.gradeText || "");
+      // 名前のスペースは半角/全角空白を「少し空けるギャップ」として扱う
+      const rawName = (cfg.nameText || "").trim();
+      const nameParts = rawName.split(/[\s　]+/).filter(Boolean);
+
+      const nameScale = cfg.nameScale || 1.0;
+      const stepRatio = cfg.nameStepRatio || 1.0;
+      const offsetYMm = cfg.nameOffsetYMm || 0;
+
+      // 学年エリア: 1文字目の少し下（上から約 8.5cm）から開始
+      const gradeStartYMm = topMm + 105;
+      const gradeCharSizeMm = 20 * nameScale;
+      const gradeStepMm = 30 * nameScale;
+
+      gradeChars.forEach((ch, i) => {
+        const yMm = gradeStartYMm + (cfg.gradeOffsetYMm || 0) + i * gradeStepMm;
+        drawCalligraphyCharMm(ctx, ch, centerXMm, yMm, gradeCharSizeMm, cfg);
+      });
+
+      // 名前エリア: 学年のすぐ下（約1.5文字分＝5.5cm下）から自然な間隔で配置
+      const allNameChars = [];
+      nameParts.forEach((part, pIdx) => {
+        if (pIdx > 0) {
+          allNameChars.push({ ch: null, gapMm: 22 * stepRatio }); // 苗字と名前の間のスペース
+        }
+        Array.from(part).forEach(ch => {
+          allNameChars.push({ ch, gapMm: 0 });
+        });
+      });
+
+      const charCount = allNameChars.filter(item => item.ch !== null).length;
+      if (charCount === 0) return;
+
+      // 学年がないときも、あるときと同じ位置から名前を始める
+      const gradeLastYMm = gradeChars.length > 0
+        ? gradeStartYMm + (gradeChars.length - 1) * gradeStepMm
+        : gradeStartYMm + gradeStepMm;
+
+      // 学年の下 14cm あたりから名前を開始（＋スライダー微調整分）。下に入りきらないときは字を小さく
+      const startYMm = gradeLastYMm + 140 + offsetYMm;
+      const gapCount = allNameChars.filter(item => item.ch === null).length;
+      const unit = 1.85 * stepRatio; // 字の間隔 = 字の大きさ × 1.85
+      const avail = bottomMm - 8 - startYMm - gapCount * 22 * stepRatio;
+      const nameCharSizeMm = Math.min(24 * nameScale, Math.max(14, avail / (charCount * unit)));
+      const nameStepMm = nameCharSizeMm * unit;
+
+      let curYMm = startYMm;
+      allNameChars.forEach(item => {
+        if (item.ch === null) {
+          curYMm += item.gapMm;
+        } else {
+          const scale = isHiragana(item.ch) ? 0.85 : 1.0;
+          drawCalligraphyCharMm(ctx, item.ch, centerXMm, curYMm, nameCharSizeMm * scale, cfg);
+          curYMm += nameStepMm;
+        }
+      });
+    }
+
+
+    /** 名前・学年の1文字を、フォントで描画（縦書きの長音符は回転） */
+    function drawCalligraphyCharMm(ctx, ch, xMm, yMm, sizeMm, cfg) {
+      ctx.save();
+      const fontPx = sizeMm * PX_PER_MM;
+      ctx.font = `600 ${fontPx}px ${NAME_FONT}`;
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.lineJoin = "round";
+      ctx.translate(xMm * PX_PER_MM, yMm * PX_PER_MM);
+      if (ch === "ー" || ch === "−" || ch === "―") ctx.rotate(Math.PI / 2);
+      const color = (cfg.styleMode === "gray") ? "#9ca3af" : "#111111";
+      ctx.fillStyle = color;
+      ctx.fillText(ch, 0, 0);
+      ctx.strokeStyle = color;
+      ctx.lineWidth = NAME_EXTRA_WEIGHT * (sizeMm / 100) * PX_PER_MM;
+      ctx.strokeText(ch, 0, 0);
+      ctx.restore();
+    }
+
+    function drawLineMm(ctx, x1Mm, y1Mm, x2Mm, y2Mm) {
+      ctx.beginPath();
+      ctx.moveTo(x1Mm * PX_PER_MM, y1Mm * PX_PER_MM);
+      ctx.lineTo(x2Mm * PX_PER_MM, y2Mm * PX_PER_MM);
+      ctx.stroke();
+    }
+
+    function drawFoldTriangleMm(ctx, xMm, yMm) {
+      const x = xMm * PX_PER_MM;
+      const y = yMm * PX_PER_MM;
+      const s = 2.8 * PX_PER_MM;
+      ctx.save();
+      ctx.fillStyle = "#6b7280";
+      ctx.beginPath();
+      ctx.moveTo(x, y);
+      ctx.lineTo(x + s, y - s * 0.7);
+      ctx.lineTo(x + s, y + s * 0.7);
+      ctx.closePath();
+      ctx.fill();
+      ctx.restore();
+    }
+
+    // =========================================================================
+    // 5. 印刷処理（A4×3枚 実寸大分割印刷 ＆ A4×1枚 全体縮小印刷）
+    // =========================================================================
+    function printSingle(mode) {
+      const cfg = getCurrentConfig();
+      buildPrintPages([cfg], mode);
+      setTimeout(() => {
+        window.print();
+      }, 120);
+    }
+
+    /**
+     * 複数人（または1人）分の印刷ページを #printMount に構築する
+     * @param {Array<Object>} configs 児童ごとの設定配列
+     * @param {'real3'|'fit1'} mode 'real3' = A4×3枚実寸(175x680mm), 'fit1' = A4×1枚縮小
+     */
+    function buildPrintPages(configs, mode) {
+      const mount = document.getElementById("printMount");
+      mount.innerHTML = "";
+
+      configs.forEach(cfg => {
+        // 印刷用のマスターキャンバス（画面専用の分割赤線なし）を作成
+        const masterCanvas = document.createElement("canvas");
+        drawOtehonToCanvas(masterCanvas, cfg, false);
+
+        if (mode === "real3") {
+          // 680mm を 3枚の A4 に分割:
+          // 1枚目(上): 0mm 〜 230mm (高さ 230mm + 下のりしろガイド 12mm)
+          // 2枚目(中): 230mm 〜 460mm (高さ 230mm + 下のりしろガイド 12mm)
+          // 3枚目(下): 460mm 〜 680mm (高さ 220mm)
+          const slices = [
+            { title: "【1 / 3 枚目：上】", startMm: 0, endMm: 230, glueMm: 12, labelBottom: "▲ ここに2枚目（中）の上端を合わせて貼る（23.0cm位置） ▲" },
+            { title: "【2 / 3 枚目：中】", startMm: 230, endMm: 460, glueMm: 12, labelTop: "✂ この実線で切る（または裏へ折る）→ 1枚目の▲印に重ねる", labelBottom: "▲ ここに3枚目（下）の上端を合わせて貼る（46.0cm位置） ▲" },
+            { title: "【3 / 3 枚目：下】", startMm: 460, endMm: 680, glueMm: 0, labelTop: "✂ この実線で切る（または裏へ折る）→ 2枚目の▲印に重ねる" }
+          ];
+
+          slices.forEach(s => {
+            const pageDiv = document.createElement("div");
+            pageDiv.className = "print-page-a4";
+
+            const sliceHeightMm = (s.endMm - s.startMm) + s.glueMm;
+            const sliceCanvas = document.createElement("canvas");
+            sliceCanvas.width = PAPER_W_MM * PX_PER_MM;
+            sliceCanvas.height = sliceHeightMm * PX_PER_MM;
+            const sCtx = sliceCanvas.getContext("2d");
+
+            // マスターキャンバスから該当領域（＋のりしろ重なり分）を切り出し
+            sCtx.drawImage(
+              masterCanvas,
+              0, s.startMm * PX_PER_MM,
+              PAPER_W_MM * PX_PER_MM, sliceHeightMm * PX_PER_MM,
+              0, 0,
+              PAPER_W_MM * PX_PER_MM, sliceHeightMm * PX_PER_MM
+            );
+
+            // のりしろエリアがある場合、230mm境界線と半透明マスク＆合わせ目印を描画
+            if (s.glueMm > 0) {
+              const joinYMm = s.endMm - s.startMm; // 230mm
+              const joinYPx = joinYMm * PX_PER_MM;
+              const gluePx = s.glueMm * PX_PER_MM;
+
+              // のりしろ部分を少し薄くして「のりしろ」文字を表示
+              sCtx.fillStyle = "rgba(245, 245, 245, 0.78)";
+              sCtx.fillRect(4, joinYPx, sliceCanvas.width - 8, gluePx - 4);
+
+              // 貼り合わせ基準線
+              sCtx.strokeStyle = "#dc2626";
+              sCtx.lineWidth = 3;
+              sCtx.setLineDash([14, 10]);
+              sCtx.beginPath();
+              sCtx.moveTo(0, joinYPx);
+              sCtx.lineTo(sliceCanvas.width, joinYPx);
+              sCtx.stroke();
+
+              // 左右の合わせ三角マーク
+              sCtx.fillStyle = "#dc2626";
+              sCtx.font = `bold ${3.6 * PX_PER_MM}px sans-serif`;
+              sCtx.textAlign = "center";
+              sCtx.textBaseline = "middle";
+              sCtx.fillText(`◀ 貼り合わせ線（のりしろ ${s.glueMm}mm） ${s.labelBottom} ▶`, sliceCanvas.width / 2, joinYPx + gluePx / 2);
+            }
+
+            // 上部ヘッダー案内（余白内）
+            const headerInfo = document.createElement("div");
+            headerInfo.style.cssText = "width:175mm; display:flex; justify-content:space-between; align-items:center; font-size:9pt; color:#374151; margin-bottom:1.5mm; font-family:sans-serif;";
+            headerInfo.innerHTML = `
+              <span><strong>${escapeHtml(s.title)}</strong> 八つ切り実寸（横17.5cm×縦68cm）</span>
+              <span>${escapeHtml(cfg.gradeText)} ${escapeHtml(cfg.nameText)}「${escapeHtml(cfg.mainText)}」</span>
+            `;
+            pageDiv.appendChild(headerInfo);
+
+            if (s.labelTop) {
+              const cutGuide = document.createElement("div");
+              cutGuide.style.cssText = "width:175mm; text-align:center; font-size:8.5pt; color:#b91c1c; font-weight:bold; margin-bottom:0.5mm;";
+              cutGuide.textContent = s.labelTop;
+              pageDiv.appendChild(cutGuide);
+            }
+
+            sliceCanvas.style.width = `${PAPER_W_MM}mm`;
+            sliceCanvas.style.height = `${sliceHeightMm}mm`;
+            sliceCanvas.style.display = "block";
+            pageDiv.appendChild(sliceCanvas);
+
+            mount.appendChild(pageDiv);
+          });
+        } else {
+          // A4 1枚に全体縮小印刷（縦265mm × 横68.2mm で八つ切り比率そのまま）
+          const pageDiv = document.createElement("div");
+          pageDiv.className = "print-page-a4";
+
+          const headerInfo = document.createElement("div");
+          headerInfo.style.cssText = "width:180mm; display:flex; justify-content:space-between; align-items:center; font-size:10.5pt; color:#1f2937; margin-bottom:4mm; border-bottom:1px solid #d1d5db; padding-bottom:2mm;";
+          headerInfo.innerHTML = `
+            <span><strong>書き初めお手本（全体バランス確認用・縮小版）</strong></span>
+            <span>${escapeHtml(cfg.gradeText)} ${escapeHtml(cfg.nameText)}「${escapeHtml(cfg.mainText)}」</span>
+          `;
+          pageDiv.appendChild(headerInfo);
+
+          // 高さ264mmに合わせると横幅は 264 * (175/680) = 67.94mm
+          masterCanvas.style.height = "264mm";
+          masterCanvas.style.width = "67.94mm";
+          masterCanvas.style.border = "1px solid #374151";
+          masterCanvas.style.display = "block";
+          pageDiv.appendChild(masterCanvas);
+
+          const footerNote = document.createElement("div");
+          footerNote.style.cssText = "margin-top:3mm; font-size:8.5pt; color:#4b5563;";
+          footerNote.textContent = "※八つ切り（17.5cm × 68cm）と同じ縦横比です。文字の大きさ・中心・名前の位置の手本にしましょう。";
+          pageDiv.appendChild(footerNote);
+
+          mount.appendChild(pageDiv);
+        }
+      });
+    }
+
+    // =========================================================================
+    // 新しいバージョンの自動チェック（タブを開きっぱなしの端末向け）
+    // index.html と課題の画像リスト(img/manifest.js)の公開時刻が、読みこみ時から変わっていたらお知らせする。
+    // 入力中の名前や調整が消えないよう、自動では再読みこみせず「いま更新する」ボタンを出す。
+    // =========================================================================
+    const updateCheck = { base: null, notified: false };
+
+    async function fetchDeploySignature() {
+      try {
+        const parts = [];
+        for (const url of ["index.html", "img/manifest.js"]) {
+          const res = await fetch(url, { method: "HEAD", cache: "no-store" });
+          if (!res.ok) return null;
+          parts.push((res.headers.get("last-modified") || "") + "|" + (res.headers.get("etag") || ""));
+        }
+        return parts.join("||");
+      } catch (e) {
+        return null; // オフライン・ファイルを直接開いているときなどは何もしない
+      }
+    }
+
+    async function checkForUpdate() {
+      if (updateCheck.notified) return;
+      const sig = await fetchDeploySignature();
+      if (!sig || sig === "|||") return;
+      if (updateCheck.base === null) { updateCheck.base = sig; return; }
+      if (sig === updateCheck.base) return;
+      updateCheck.notified = true;
+      const bar = document.createElement("div");
+      bar.className = "update-bar";
+      bar.innerHTML = '<span>🆕 新しいバージョンがあります</span><button type="button">いま更新する</button>';
+      bar.querySelector("button").addEventListener("click", () => location.reload());
+      document.body.appendChild(bar);
+    }
+
+    function setupUpdateCheck() {
+      checkForUpdate();
+      setInterval(checkForUpdate, 3 * 60 * 1000);
+      document.addEventListener("visibilitychange", () => { if (!document.hidden) checkForUpdate(); });
+      window.addEventListener("focus", checkForUpdate);
+    }
+
+    function escapeHtml(str) {
+      return String(str || "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+    }
+  </script>
+</body>
+</html>
