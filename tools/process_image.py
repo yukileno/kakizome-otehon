@@ -17,11 +17,12 @@ def process(src, dst):
     lo, hi = 95, 185  # これ以下は真っ黒、これ以上は紙
     lut = [int(255 * (1 - min(1, max(0, (v - lo) / (hi - lo))))) for v in range(256)]
     alpha = big.point(lut)
-    # 文字の外接枠で切りぬく（紙のふちのゴミは外側10%を無視）
+    # 文字の外接枠で切りぬく。画像のふちから 1% だけ内側を見る
+    # （以前は上下4%・左右8%を無視していて、ふちに近い字の先が切れていた）
     mw, mh = alpha.size
-    inner = alpha.crop((int(mw * .08), int(mh * .04), int(mw * .92), int(mh * .96)))
+    ox, oy = int(mw * .01), int(mh * .01)
+    inner = alpha.crop((ox, oy, mw - ox, mh - oy))
     box = inner.point(lambda v: 255 if v > 128 else 0).getbbox()
-    ox, oy = int(mw * .08), int(mh * .04)
     pad = 12
     box = (max(0, ox + box[0] - pad), max(0, oy + box[1] - pad), min(mw, ox + box[2] + pad), min(mh, oy + box[3] + pad))
     alpha = alpha.crop(box)
