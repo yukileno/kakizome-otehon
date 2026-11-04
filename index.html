@@ -267,13 +267,6 @@
       gap: 2px;
     }
 
-    .word-btn span.word-sub {
-      font-size: 0.72rem;
-      color: var(--muted);
-      font-family: sans-serif;
-      font-weight: normal;
-    }
-
     .word-btn:hover {
       border-color: var(--primary);
       background: var(--primary-light);
@@ -752,384 +745,303 @@
     // =========================================================================
     const PRESET_WORDS = {
       "三年": [
-        { word: "お正月", sub: "3年定番" },
-        { word: "つよい子", sub: "3年定番" },
-        { word: "友だち", sub: "3年定番" },
-        { word: "あさ日", sub: "3年定番" },
-        { word: "元気な子", sub: "3年定番" },
-        { word: "美しい心", sub: "3年定番" },
-        { word: "ふじ山", sub: "3年定番" },
-        { word: "はるの空", sub: "3年定番" }
+        { word: "お正月" },
+        { word: "つよい子" },
+        { word: "友だち" },
+        { word: "あさ日" },
+        { word: "元気な子" },
+        { word: "美しい心" },
+        { word: "ふじ山" },
+        { word: "はるの空" }
       ],
       "四年": [
-        { word: "明るい心", sub: "4年定番" },
-        { word: "春の海", sub: "4年定番" },
-        { word: "元気な子", sub: "4年定番" },
-        { word: "流れる星", sub: "4年定番" },
-        { word: "美しい空", sub: "4年定番" },
-        { word: "世界の友", sub: "4年定番" },
-        { word: "光る虹", sub: "4年定番" },
-        { word: "希望の朝", sub: "4年定番" }
+        { word: "明るい心" },
+        { word: "春の海" },
+        { word: "元気な子" },
+        { word: "流れる星" },
+        { word: "美しい空" },
+        { word: "世界の友" },
+        { word: "光る虹" },
+        { word: "希望の朝" }
       ],
       "五年": [
-        { word: "光る大地", sub: "中日書き初めコンクール" },
-        { word: "新しい風", sub: "5年定番" },
-        { word: "希望の朝", sub: "5年定番" },
-        { word: "春の富士", sub: "5年定番" },
-        { word: "世界の国", sub: "5年定番" },
-        { word: "強い信念", sub: "5年定番" },
-        { word: "輝く未来", sub: "5年定番" },
-        { word: "進む勇気", sub: "5年定番" },
-        { word: "美しい山", sub: "5年定番" },
-        { word: "初日の出", sub: "5年定番" },
-        { word: "光る未来", sub: "5年定番" },
-        { word: "春の足音", sub: "5年定番" },
-        { word: "平和な国", sub: "5年定番" },
-        { word: "美しい空", sub: "5年定番" },
-        { word: "明るい心", sub: "5年定番" },
-        { word: "未来の夢", sub: "5年定番" },
-        { word: "希望の道", sub: "5年定番" },
-        { word: "大きな夢", sub: "5年定番" },
-        { word: "新しい道", sub: "5年定番" },
-        { word: "夢の実現", sub: "5年定番" },
-        { word: "希望の光", sub: "5年定番" },
-        { word: "目標達成", sub: "5年定番" },
-        { word: "全力投球", sub: "5年定番" },
-        { word: "有言実行", sub: "5年定番" },
-        { word: "不言実行", sub: "5年定番" },
-        { word: "感謝の心", sub: "5年定番" },
-        { word: "一致団結", sub: "5年定番" }
+        { word: "光る大地" },
+        { word: "新しい風" },
+        { word: "希望の朝" },
+        { word: "春の富士" },
+        { word: "世界の国" },
+        { word: "強い信念" },
+        { word: "輝く未来" },
+        { word: "進む勇気" },
+        { word: "美しい山" },
+        { word: "初日の出" },
+        { word: "光る未来" },
+        { word: "春の足音" },
+        { word: "平和な国" },
+        { word: "美しい空" },
+        { word: "明るい心" },
+        { word: "未来の夢" },
+        { word: "希望の道" },
+        { word: "大きな夢" },
+        { word: "新しい道" },
+        { word: "夢の実現" },
+        { word: "希望の光" },
+        { word: "目標達成" },
+        { word: "全力投球" },
+        { word: "有言実行" },
+        { word: "不言実行" },
+        { word: "感謝の心" },
+        { word: "一致団結" }
       ],
       "六年": [
-        { word: "夢の実現", sub: "6年定番" },
-        { word: "伝統を守る", sub: "6年定番" },
-        { word: "新春の光", sub: "6年定番" },
-        { word: "平和な国", sub: "6年定番" },
-        { word: "強い決意", sub: "6年定番" },
-        { word: "未来の夢", sub: "6年定番" },
-        { word: "感謝の心", sub: "6年定番" },
-        { word: "希望の道", sub: "6年定番" },
-        { word: "春光富士", sub: "6年定番" },
-        { word: "花の新春", sub: "6年定番" },
-        { word: "白雪峰光", sub: "6年定番" },
-        { word: "天光初雪", sub: "6年定番" },
-        { word: "天上大風", sub: "6年定番" },
-        { word: "希望前進", sub: "6年定番" },
-        { word: "天地清新", sub: "6年定番" },
-        { word: "雪花新春", sub: "6年定番" },
-        { word: "東海初光", sub: "6年定番" },
-        { word: "初冬の光", sub: "6年定番" },
-        { word: "飛雪千里", sub: "6年定番" },
-        { word: "初日の光", sub: "6年定番" },
-        { word: "春の天使", sub: "6年定番" },
-        { word: "東天の雲", sub: "6年定番" },
-        { word: "若木の里", sub: "6年定番" },
-        { word: "天地新春", sub: "6年定番" },
-        { word: "南十字星", sub: "6年定番" },
-        { word: "風林火山", sub: "6年定番" },
-        { word: "天地創造", sub: "6年定番" },
-        { word: "希望の光", sub: "6年定番" },
-        { word: "江山春色", sub: "6年定番" },
-        { word: "天地初光", sub: "6年定番" },
-        { word: "白雪春光", sub: "6年定番" },
-        { word: "平和の光", sub: "6年定番" },
-        { word: "天長地久", sub: "6年定番" },
-        { word: "光風動春", sub: "6年定番" }
-      ],
-      "四字熟語・抱負": [
-        { word: "一所懸命", sub: "四字熟語" },
-        { word: "日進月歩", sub: "四字熟語" },
-        { word: "温故知新", sub: "四字熟語" },
-        { word: "初志貫徹", sub: "四字熟語" },
-        { word: "七転八起", sub: "四字熟語" },
-        { word: "切磋琢磨", sub: "四字熟語" },
-        { word: "不言実行", sub: "四字熟語" },
-        { word: "全力投球", sub: "四字熟語" }
+        { word: "夢の実現" },
+        { word: "伝統を守る" },
+        { word: "新春の光" },
+        { word: "平和な国" },
+        { word: "強い決意" },
+        { word: "未来の夢" },
+        { word: "感謝の心" },
+        { word: "希望の道" },
+        { word: "春光富士" },
+        { word: "花の新春" },
+        { word: "白雪峰光" },
+        { word: "天光初雪" },
+        { word: "天上大風" },
+        { word: "希望前進" },
+        { word: "天地清新" },
+        { word: "雪花新春" },
+        { word: "東海初光" },
+        { word: "初冬の光" },
+        { word: "飛雪千里" },
+        { word: "初日の光" },
+        { word: "春の天使" },
+        { word: "東天の雲" },
+        { word: "若木の里" },
+        { word: "天地新春" },
+        { word: "南十字星" },
+        { word: "風林火山" },
+        { word: "天地創造" },
+        { word: "希望の光" },
+        { word: "江山春色" },
+        { word: "天地初光" },
+        { word: "白雪春光" },
+        { word: "平和の光" },
+        { word: "天長地久" },
+        { word: "光風動春" }
       ],
       "一年": [
-        { word: "お日さま", sub: "1・2年" },
-        { word: "あかるい", sub: "1・2年" },
-        { word: "げんき", sub: "1・2年" },
-        { word: "なかよし", sub: "1・2年" },
-        { word: "おしょうがつ", sub: "1・2年" },
-        { word: "はるの空", sub: "1・2年" }
+        { word: "お日さま" },
+        { word: "あかるい" },
+        { word: "げんき" },
+        { word: "なかよし" },
+        { word: "おしょうがつ" },
+        { word: "はるの空" }
       ],
       "二年": [
-        { word: "元気な子", sub: "2年" },
-        { word: "青い空", sub: "2年" },
-        { word: "お正月", sub: "2年" },
-        { word: "あたらしい朝", sub: "2年" },
-        { word: "ともだち", sub: "2年" },
-        { word: "はるの風", sub: "2年" }
-      ],
-      "中学": [
-        { word: "不言実行", sub: "中学定番" },
-        { word: "温故知新", sub: "中学定番" },
-        { word: "初志貫徹", sub: "中学定番" },
-        { word: "無限の力", sub: "中学定番" },
-        { word: "新たな決意", sub: "中学定番" },
-        { word: "早春の風", sub: "中学定番" }
+        { word: "元気な子" },
+        { word: "青い空" },
+        { word: "お正月" },
+        { word: "あたらしい朝" },
+        { word: "ともだち" },
+        { word: "はるの風" }
       ]
     };
 
-    // R7「学年別書き初め文字例」。数字は文字例に含めず、○印をおすすめとして保持。
+    // R7「学年別書き初め文字例」。本文以外の数字・○印は課題に含めない。
     const R7_WORDS = {
   "三年": [
     {
-      "word": "おとし玉",
-      "recommended": true
+      "word": "おとし玉"
     },
     {
-      "word": "たこ上げ",
-      "recommended": false
+      "word": "たこ上げ"
     },
     {
-      "word": "正月もち",
-      "recommended": true
+      "word": "正月もち"
     },
     {
-      "word": "はるの空",
-      "recommended": false
+      "word": "はるの空"
     },
     {
-      "word": "生きる力",
-      "recommended": true
+      "word": "生きる力"
     },
     {
-      "word": "大きな力",
-      "recommended": false
+      "word": "大きな力"
     },
     {
-      "word": "花だより",
-      "recommended": false
+      "word": "花だより"
     },
     {
-      "word": "かぜの音",
-      "recommended": false
+      "word": "かぜの音"
     },
     {
-      "word": "かるた会",
-      "recommended": false
+      "word": "かるた会"
     },
     {
-      "word": "木がらし",
-      "recommended": false
+      "word": "木がらし"
     },
     {
-      "word": "初がすみ",
-      "recommended": false
+      "word": "初がすみ"
     },
     {
-      "word": "ふじの山",
-      "recommended": false
+      "word": "ふじの山"
     },
     {
-      "word": "はるの光",
-      "recommended": false
+      "word": "はるの光"
     },
     {
-      "word": "白いゆき",
-      "recommended": true
+      "word": "白いゆき"
     },
     {
-      "word": "しろい山",
-      "recommended": true
+      "word": "しろい山"
     }
   ],
   "四年": [
     {
-      "word": "元気な声",
-      "recommended": false
+      "word": "元気な声"
     },
     {
-      "word": "元日の朝",
-      "recommended": true
+      "word": "元日の朝"
     },
     {
-      "word": "正月の空",
-      "recommended": false
+      "word": "正月の空"
     },
     {
-      "word": "初日の出",
-      "recommended": false
+      "word": "初日の出"
     },
     {
-      "word": "平和の光",
-      "recommended": true
+      "word": "平和の光"
     },
     {
-      "word": "初冬の光",
-      "recommended": false
+      "word": "初冬の光"
     },
     {
-      "word": "冬の山里",
-      "recommended": false
+      "word": "冬の山里"
     },
     {
-      "word": "春の小川",
-      "recommended": false
+      "word": "春の小川"
     },
     {
-      "word": "元気な子",
-      "recommended": false
+      "word": "元気な子"
     },
     {
-      "word": "初日の光",
-      "recommended": false
+      "word": "初日の光"
     },
     {
-      "word": "赤い南天",
-      "recommended": true
+      "word": "赤い南天"
     },
     {
-      "word": "美しい空",
-      "recommended": true
+      "word": "美しい空"
     },
     {
-      "word": "山の初光",
-      "recommended": false
+      "word": "山の初光"
     },
     {
-      "word": "山川の春",
-      "recommended": false
+      "word": "山川の春"
     },
     {
-      "word": "美しい山",
-      "recommended": false
+      "word": "美しい山"
     }
   ],
   "五年": [
     {
-      "word": "光る大地",
-      "recommended": false
+      "word": "光る大地"
     },
     {
-      "word": "春の子馬",
-      "recommended": false
+      "word": "春の子馬"
     },
     {
-      "word": "若木の香",
-      "recommended": false
+      "word": "若木の香"
     },
     {
-      "word": "早春の光",
-      "recommended": true
+      "word": "早春の光"
     },
     {
-      "word": "春の野山",
-      "recommended": false
+      "word": "春の野山"
     },
     {
-      "word": "山里の春",
-      "recommended": false
+      "word": "山里の春"
     },
     {
-      "word": "平和の里",
-      "recommended": false
+      "word": "平和の里"
     },
     {
-      "word": "希望の春",
-      "recommended": false
+      "word": "希望の春"
     },
     {
-      "word": "初光の海",
-      "recommended": false
+      "word": "初光の海"
     },
     {
-      "word": "初春の光",
-      "recommended": true
+      "word": "初春の光"
     },
     {
-      "word": "山里の冬",
-      "recommended": true
+      "word": "山里の冬"
     },
     {
-      "word": "少年大志",
-      "recommended": false
+      "word": "少年大志"
     },
     {
-      "word": "花の新春",
-      "recommended": false
+      "word": "花の新春"
     },
     {
-      "word": "新雪の山",
-      "recommended": false
+      "word": "新雪の山"
     },
     {
-      "word": "東天の雲",
-      "recommended": false
+      "word": "東天の雲"
     }
   ],
   "六年": [
     {
-      "word": "希望新春",
-      "recommended": false
+      "word": "希望新春"
     },
     {
-      "word": "少年大志",
-      "recommended": false
+      "word": "少年大志"
     },
     {
-      "word": "春風万里",
-      "recommended": false
+      "word": "春風万里"
     },
     {
-      "word": "春待つ心",
-      "recommended": true
+      "word": "春待つ心"
     },
     {
-      "word": "夢の実現",
-      "recommended": true
+      "word": "夢の実現"
     },
     {
-      "word": "冬の星座",
-      "recommended": false
+      "word": "冬の星座"
     },
     {
-      "word": "青雲大志",
-      "recommended": false
+      "word": "青雲大志"
     },
     {
-      "word": "寒月梅林",
-      "recommended": false
+      "word": "寒月梅林"
     },
     {
-      "word": "新春初光",
-      "recommended": false
+      "word": "新春初光"
     },
     {
-      "word": "希望の春",
-      "recommended": true
+      "word": "希望の春"
     },
     {
-      "word": "東天新光",
-      "recommended": false
+      "word": "東天新光"
     },
     {
-      "word": "春光万里",
-      "recommended": false
+      "word": "春光万里"
     },
     {
-      "word": "雪花新春",
-      "recommended": false
+      "word": "雪花新春"
     },
     {
-      "word": "白雪新春",
-      "recommended": false
+      "word": "白雪新春"
     },
     {
-      "word": "花の新春",
-      "recommended": false
+      "word": "花の新春"
     }
   ]
 };
     Object.entries(R7_WORDS).forEach(([grade, examples]) => {
       const words = PRESET_WORDS[grade];
-      examples.forEach(({ word, recommended }) => {
-        const sub = "R7文字例" + (recommended ? "・おすすめ ○" : "");
-        const existing = words.find(item => item.word === word);
-        if (existing) existing.sub += " / " + sub;
-        else words.push({ word, sub });
+      examples.forEach(({ word }) => {
+        if (!words.some(item => item.word === word)) words.push({ word });
       });
     });
 
@@ -1196,7 +1108,7 @@
           document.querySelectorAll(".grade-btn").forEach(b => b.classList.remove("active"));
           btn.classList.add("active");
           const g = btn.dataset.grade;
-          document.getElementById("gradeInput").value = g === "中学" ? "一" : g;
+          document.getElementById("gradeInput").value = g;
           if (PRESET_WORDS[g]) {
             currentCategory = g;
             renderCategoryTabs();
@@ -1222,8 +1134,7 @@
     // =========================================================================
     function renderCategoryTabs() {
       const container = document.getElementById("categoryTabs");
-      const categories = [];
-      categories.push("三年", "四年", "五年", "六年", "四字熟語・抱負", "一年", "二年", "中学");
+      const categories = ["一年", "二年", "三年", "四年", "五年", "六年"];
 
       container.innerHTML = "";
       categories.forEach(cat => {
@@ -1255,7 +1166,7 @@
         const hasImage = Boolean(window.GEN_IMAGES && window.GEN_IMAGES[item.word]);
         btn.disabled = !hasImage;
         btn.title = hasImage ? item.word : "筆文字画像を準備中です";
-        btn.innerHTML = `<span>${escapeHtml(item.word)}</span><span class="word-sub">${escapeHtml(item.sub)}${hasImage ? "" : " / 画像準備中"}</span>`;
+        btn.innerHTML = `<span>${escapeHtml(item.word)}</span>`;
         btn.onclick = () => {
           document.getElementById("mainTextInput").value = item.word;
           highlightActiveWordButton();
