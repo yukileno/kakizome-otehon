@@ -280,6 +280,8 @@
       transform: translateY(-1px);
     }
 
+    .word-btn:disabled { opacity: 0.55; cursor: wait; transform: none; }
+
     .word-btn.active {
       background: var(--primary-light);
       border-color: var(--primary);
@@ -743,7 +745,7 @@
   <!-- 印刷用マウント領域 -->
   <div id="printMount"></div>
 
-  <script src="img/manifest.js"></script>
+  <script src="img/manifest.js?v=20261104-r7"></script>
   <script>
     // =========================================================================
     // 1. 学年別・定番の書き初め課題プリセットデータ
@@ -870,6 +872,267 @@
       ]
     };
 
+    // R7「学年別書き初め文字例」。数字は文字例に含めず、○印をおすすめとして保持。
+    const R7_WORDS = {
+  "三年": [
+    {
+      "word": "おとし玉",
+      "recommended": true
+    },
+    {
+      "word": "たこ上げ",
+      "recommended": false
+    },
+    {
+      "word": "正月もち",
+      "recommended": true
+    },
+    {
+      "word": "はるの空",
+      "recommended": false
+    },
+    {
+      "word": "生きる力",
+      "recommended": true
+    },
+    {
+      "word": "大きな力",
+      "recommended": false
+    },
+    {
+      "word": "花だより",
+      "recommended": false
+    },
+    {
+      "word": "かぜの音",
+      "recommended": false
+    },
+    {
+      "word": "かるた会",
+      "recommended": false
+    },
+    {
+      "word": "木がらし",
+      "recommended": false
+    },
+    {
+      "word": "初がすみ",
+      "recommended": false
+    },
+    {
+      "word": "ふじの山",
+      "recommended": false
+    },
+    {
+      "word": "はるの光",
+      "recommended": false
+    },
+    {
+      "word": "白いゆき",
+      "recommended": true
+    },
+    {
+      "word": "しろい山",
+      "recommended": true
+    }
+  ],
+  "四年": [
+    {
+      "word": "元気な声",
+      "recommended": false
+    },
+    {
+      "word": "元日の朝",
+      "recommended": true
+    },
+    {
+      "word": "正月の空",
+      "recommended": false
+    },
+    {
+      "word": "初日の出",
+      "recommended": false
+    },
+    {
+      "word": "平和の光",
+      "recommended": true
+    },
+    {
+      "word": "初冬の光",
+      "recommended": false
+    },
+    {
+      "word": "冬の山里",
+      "recommended": false
+    },
+    {
+      "word": "春の小川",
+      "recommended": false
+    },
+    {
+      "word": "元気な子",
+      "recommended": false
+    },
+    {
+      "word": "初日の光",
+      "recommended": false
+    },
+    {
+      "word": "赤い南天",
+      "recommended": true
+    },
+    {
+      "word": "美しい空",
+      "recommended": true
+    },
+    {
+      "word": "山の初光",
+      "recommended": false
+    },
+    {
+      "word": "山川の春",
+      "recommended": false
+    },
+    {
+      "word": "美しい山",
+      "recommended": false
+    }
+  ],
+  "五年": [
+    {
+      "word": "光る大地",
+      "recommended": false
+    },
+    {
+      "word": "春の子馬",
+      "recommended": false
+    },
+    {
+      "word": "若木の香",
+      "recommended": false
+    },
+    {
+      "word": "早春の光",
+      "recommended": true
+    },
+    {
+      "word": "春の野山",
+      "recommended": false
+    },
+    {
+      "word": "山里の春",
+      "recommended": false
+    },
+    {
+      "word": "平和の里",
+      "recommended": false
+    },
+    {
+      "word": "希望の春",
+      "recommended": false
+    },
+    {
+      "word": "初光の海",
+      "recommended": false
+    },
+    {
+      "word": "初春の光",
+      "recommended": true
+    },
+    {
+      "word": "山里の冬",
+      "recommended": true
+    },
+    {
+      "word": "少年大志",
+      "recommended": false
+    },
+    {
+      "word": "花の新春",
+      "recommended": false
+    },
+    {
+      "word": "新雪の山",
+      "recommended": false
+    },
+    {
+      "word": "東天の雲",
+      "recommended": false
+    }
+  ],
+  "六年": [
+    {
+      "word": "希望新春",
+      "recommended": false
+    },
+    {
+      "word": "少年大志",
+      "recommended": false
+    },
+    {
+      "word": "春風万里",
+      "recommended": false
+    },
+    {
+      "word": "春待つ心",
+      "recommended": true
+    },
+    {
+      "word": "夢の実現",
+      "recommended": true
+    },
+    {
+      "word": "冬の星座",
+      "recommended": false
+    },
+    {
+      "word": "青雲大志",
+      "recommended": false
+    },
+    {
+      "word": "寒月梅林",
+      "recommended": false
+    },
+    {
+      "word": "新春初光",
+      "recommended": false
+    },
+    {
+      "word": "希望の春",
+      "recommended": true
+    },
+    {
+      "word": "東天新光",
+      "recommended": false
+    },
+    {
+      "word": "春光万里",
+      "recommended": false
+    },
+    {
+      "word": "雪花新春",
+      "recommended": false
+    },
+    {
+      "word": "白雪新春",
+      "recommended": false
+    },
+    {
+      "word": "花の新春",
+      "recommended": false
+    }
+  ]
+};
+    Object.entries(R7_WORDS).forEach(([grade, examples]) => {
+      const words = PRESET_WORDS[grade];
+      examples.forEach(({ word, recommended }) => {
+        const sub = "R7文字例" + (recommended ? "・おすすめ ○" : "");
+        const existing = words.find(item => item.word === word);
+        if (existing) existing.sub += " / " + sub;
+        else words.push({ word, sub });
+      });
+    });
+
     // 状態管理
     let currentCategory = "五年";
 
@@ -989,7 +1252,10 @@
         const btn = document.createElement("button");
         btn.type = "button";
         btn.className = "word-btn" + (item.word === currentWord ? " active" : "");
-        btn.innerHTML = `<span>${escapeHtml(item.word)}</span><span class="word-sub">${escapeHtml(item.sub)}</span>`;
+        const hasImage = Boolean(window.GEN_IMAGES && window.GEN_IMAGES[item.word]);
+        btn.disabled = !hasImage;
+        btn.title = hasImage ? item.word : "筆文字画像を準備中です";
+        btn.innerHTML = `<span>${escapeHtml(item.word)}</span><span class="word-sub">${escapeHtml(item.sub)}${hasImage ? "" : " / 画像準備中"}</span>`;
         btn.onclick = () => {
           document.getElementById("mainTextInput").value = item.word;
           highlightActiveWordButton();
@@ -1019,7 +1285,7 @@
       const config = getCurrentConfig();
       drawOtehonToCanvas(canvas, config, true);
       const note = document.getElementById("genImageNote");
-      if (note) note.textContent = (window.GEN_IMAGES && window.GEN_IMAGES[config.mainText]) ? "" : "この課題の筆書き画像がありません";
+      if (note) note.textContent = (window.GEN_IMAGES && window.GEN_IMAGES[config.mainText]) ? "" : "この課題の筆文字画像は準備中です";
       document.getElementById("genScaleVal").textContent = Math.round(config.genScale * 100) + "%";
       document.getElementById("genOffsetXVal").textContent = (config.genOffsetXMm > 0 ? "+" : "") + config.genOffsetXMm + "mm";
       ensureFontsLoaded(config);
