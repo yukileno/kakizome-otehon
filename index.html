@@ -795,7 +795,6 @@
       ],
       "六年": [
         { word: "夢の実現" },
-        { word: "伝統を守る" },
         { word: "新春の光" },
         { word: "平和な国" },
         { word: "強い決意" },
@@ -840,7 +839,6 @@
         { word: "元気な子" },
         { word: "青い空" },
         { word: "お正月" },
-        { word: "あたらしい朝" },
         { word: "ともだち" },
         { word: "はるの風" }
       ]
@@ -1385,6 +1383,9 @@
       })));
     }
 
+    // 文字ごとの左右の微調整（mm）。「お正月」の「月」を少し左へ。
+    const MAIN_CHAR_OFFSETS_MM = { "お正月": [0, 0, -2] };
+
     function drawGenImageMm(ctx, e, cxMm, topMm, bodyHMm, tint, scale) {
       const img = e.img;
       const maxW = 142 * PX_PER_MM, bodyH = bodyHMm * PX_PER_MM;
@@ -1401,10 +1402,11 @@
         target.drawImage(img, cxMm * PX_PER_MM - w / 2, topMm * PX_PER_MM + (bodyH - h) / 2, w, h);
       } else {
         const glyphs = layoutGenCharacters(e.text, segs, maxW, bodyH, scale || 1);
-        glyphs.forEach(({ seg: [y0, y1, x0, x1], x, y, w, h }) => {
+        glyphs.forEach(({ seg: [y0, y1, x0, x1], x, y, w, h }, i) => {
+          const offsetX = (MAIN_CHAR_OFFSETS_MM[e.text]?.[i] || 0) * PX_PER_MM * (scale || 1);
           // 字の外接枠だけを使い、枠の外にある微小な墨を中心合わせに含めない。
           target.drawImage(img, x0, y0, x1 - x0, y1 - y0,
-            cxMm * PX_PER_MM + x, topMm * PX_PER_MM + y, w, h);
+            cxMm * PX_PER_MM + x + offsetX, topMm * PX_PER_MM + y, w, h);
         });
       }
       if (tint) {
