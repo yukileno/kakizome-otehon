@@ -10,6 +10,60 @@
  4. 各文字の左右の墨の端(x0, x1)を求める。
 """
 from PIL import Image
+import re
+
+
+def character_ink_bbox(ink):
+    """離れた微小な墨を除いて字の外接枠を求める。点・濁点などは残す。
+
+    二値画像を横方向の連続区間に分け、上下（斜めを含む）に接する区間を
+    連結する。最大の墨の塊の0.3%未満の、ごく小さな独立成分だけを無視。
+    元の画像は変更せず、文字の実際の画の端まで含む座標を返す。
+    """
+    w, h = ink.size
+    data = ink.tobytes()
+    parent, boxes, areas = [], [], []
+
+    def root(i):
+        while parent[i] != i:
+            parent[i] = parent[parent[i]]
+            i = parent[i]
+        return i
+
+    previous = []
+    for y in range(h):
+        current = []
+        for match in re.finditer(b"\xff+", data[y * w:(y + 1) * w]):
+            a, b = match.span()
+            hits = {root(i) for pa, pb, i in previous if pa <= b and pb >= a}
+            if hits:
+                i = min(hits)
+                for other in hits - {i}:
+                    parent[other] = i
+                    areas[i] += areas[other]
+                    box, old = boxes[i], boxes[other]
+                    boxes[i] = [min(box[0], old[0]), min(box[1], old[1]),
+                                max(box[2], old[2]), max(box[3], old[3])]
+                box = boxes[i]
+                boxes[i] = [min(box[0], a), min(box[1], y), max(box[2], b), y + 1]
+                areas[i] += b - a
+            else:
+                i = len(parent)
+                parent.append(i)
+                boxes.append([a, y, b, y + 1])
+                areas.append(b - a)
+            current.append((a, b, i))
+        previous = current
+    components = [i for i in range(len(parent)) if root(i) == i]
+    if not components:
+        return None
+    threshold = max(4, max(areas[i] for i in components) * 0.003)
+    kept = [boxes[i] for i in components if areas[i] >= threshold]
+    if not kept:
+        return tuple(boxes[max(components, key=lambda i: areas[i])])
+    return (min(b[0] for b in kept), min(b[1] for b in kept),
+            max(b[2] for b in kept), max(b[3] for b in kept))
+
 
 def find_segments(path, n):
     im = Image.open(path)
@@ -39,10 +93,10 @@ def find_segments(path, n):
             if not rows:
                 return None
             y0, y1 = rows[0], rows[-1] + 1
-            box = ink.crop((0, y0, w, y1)).getbbox()
+            box = character_ink_bbox(ink.crop((0, y0, w, y1)))
             if not box:
                 return None
-            segs.append([y0, y1, box[0], box[2]])
+            segs.append([y0 + box[1], y0 + box[3], box[0], box[2]])
         return segs
 
     if n == 1:

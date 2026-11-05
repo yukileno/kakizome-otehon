@@ -738,7 +738,7 @@
   <!-- 印刷用マウント領域 -->
   <div id="printMount"></div>
 
-  <script src="img/manifest.js?v=20261104-r7"></script>
+  <script src="img/manifest.js?v=20261105-layout"></script>
   <script>
     // =========================================================================
     // 1. 学年別・定番の書き初め課題プリセットデータ
@@ -1337,11 +1337,53 @@
       if (!info) return null;
       let e = genImageCache[info.src];
       if (!e) {
-        e = genImageCache[info.src] = { img: new Image(), ready: false, segs: info.segs };
+        e = genImageCache[info.src] = { img: new Image(), ready: false, segs: info.segs, text };
         e.img.onload = () => { e.ready = true; renderPreview(); };
         e.img.src = info.src;
       }
       return e.ready ? e : null;
+    }
+
+    // 小書き仮名は直前の文字とひとまとまりにし、右下に添える。
+    function layoutGenCharacters(text, segs, maxW, bodyH, scale = 1) {
+      const chars = Array.from(text);
+      const groups = [];
+      segs.forEach((seg, i) => {
+        const small = /^[ぁぃぅぇぉっゃゅょゎァィゥェォッャュョヮヵヶ]$/.test(chars[i] || "");
+        if (small && groups.length) groups[groups.length - 1].push({ seg, small: true });
+        else groups.push([{ seg, small: false }]);
+      });
+      const normal = groups.map(group => group[0].seg);
+      const refW = Math.max(...normal.map(s => s[3] - s[2]));
+      const refH = Math.max(...normal.map(s => s[1] - s[0]));
+      const slotH = bodyH / groups.length;
+      const boxes = groups.map(group => {
+        const parent = group[0].seg;
+        const parentW = parent[3] - parent[2], parentH = parent[1] - parent[0];
+        let right = parentW / 2;
+        const glyphs = group.map(({ seg, small }) => {
+          const [y0, y1, x0, x1] = seg;
+          const factor = small ? Math.min(1, refW * 0.42 / (x1 - x0), refH * 0.42 / (y1 - y0)) : 1;
+          const w = (x1 - x0) * factor, h = (y1 - y0) * factor;
+          const x = small ? right + refW * 0.025 : -w / 2;
+          const y = small ? parentH / 2 - h * 0.3 : -h / 2;
+          if (small) right = x + w;
+          return { seg, x, y, w, h };
+        });
+        const top = Math.min(...glyphs.map(g => g.y));
+        const bottom = Math.max(...glyphs.map(g => g.y + g.h));
+        return { glyphs, top, bottom };
+      });
+      const halfW = Math.max(...boxes.flatMap(b => b.glyphs.map(g => Math.max(Math.abs(g.x), Math.abs(g.x + g.w)))));
+      const maxH = Math.max(...boxes.map(b => b.bottom - b.top));
+      const k = Math.min(maxW / (halfW * 2), slotH * 0.96 / maxH) * scale;
+      return boxes.flatMap((b, i) => b.glyphs.map(g => ({
+        seg: g.seg,
+        x: g.x * k,
+        y: slotH * (i + 0.5) + (g.y - (b.top + b.bottom) / 2) * k,
+        w: g.w * k,
+        h: g.h * k
+      })));
     }
 
     function drawGenImageMm(ctx, e, cxMm, topMm, bodyHMm, tint, scale) {
@@ -1359,18 +1401,11 @@
         const w = img.width * k, h = img.height * k;
         target.drawImage(img, cxMm * PX_PER_MM - w / 2, topMm * PX_PER_MM + (bodyH - h) / 2, w, h);
       } else {
-        // 文字の大きさは、横幅に収まる範囲でいちばん大きく。文字のあいだは、縦いっぱいに等間隔
-        const slotH = bodyH / segs.length;
-        const maxSegH = Math.max(...segs.map(([y0, y1]) => y1 - y0));
-        const maxCharW = Math.max(...segs.map(([y0, y1, x0, x1]) => x1 - x0));
-        // 縦横比は変えない。いちばん幅の広い字が maxW に収まる大きさ（縦の枠からはみ出さない範囲）
-        const k = Math.min(maxW / maxCharW, slotH * 0.96 / maxSegH) * (scale || 1);
-        segs.forEach(([y0, y1, x0, x1], i) => {
-          const h = (y1 - y0) * k;
-          const cy = topMm * PX_PER_MM + slotH * (i + 0.5);
-          // 各文字の左右の中心を、中心線にそろえる
-          const dx = cxMm * PX_PER_MM - ((x0 + x1) / 2) * k;
-          target.drawImage(img, 0, y0, img.width, y1 - y0, dx, cy - h / 2, img.width * k, h);
+        const glyphs = layoutGenCharacters(e.text, segs, maxW, bodyH, scale || 1);
+        glyphs.forEach(({ seg: [y0, y1, x0, x1], x, y, w, h }) => {
+          // 字の外接枠だけを使い、枠の外にある微小な墨を中心合わせに含めない。
+          target.drawImage(img, x0, y0, x1 - x0, y1 - y0,
+            cxMm * PX_PER_MM + x, topMm * PX_PER_MM + y, w, h);
         });
       }
       if (tint) {
